@@ -1,0 +1,60 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+ {
+   "type": "Feature",
+   "geometry": {
+      "type": "Point",
+      "coordinates":  [ -74.75888889,41.46138889 ]
+   },
+   "properties": {
+   "Station Name":"MONGAUP RIVER NEAR MONGAUP NY",
+   "Site ID":"01433500"
+   }
+ },
+ {
+   "type": "Feature",
+   "geometry": {
+      "type": "Point",
+      "coordinates":  [ -78.9341667,42.4633333 ]
+   },
+   "properties": {
+   "Station Name":"CATTARAUGUS CREEK AT GOWANDA NY",
+   "Site ID":"04213500"
+   }
+ },
+ {
+  "type": "Feature",
+  "geometry": {
+     "type": "Point",
+     "coordinates":  [ -77.82888889,42.68194444 ]
+  },
+  "properties": {
+  "Station Name":"KESHEQUA CR AT CRAIG COLONY AT SONYEA NY",
+  "Site ID":"04226000"
+  }
+},
+{
+  "type": "Feature",
+  "geometry": {
+     "type": "Point",
+     "coordinates":  [ -77.6163056,43.1417222 ]
+  },
+  "properties": {
+  "Station Name":"GENESEE RIVER AT FORD STREET BRIDGE, ROCHESTER NY",
+  "Site ID":"04231600"
+  }
+},
+{
+  "type": "Feature",
+  "geometry": {
+     "type": "Point",
+     "coordinates":  [ -76.50527778,43.45166667	 ]
+  },
+  "properties": {
+  "Station Name":"OSWEGO RIVER AT LOCK 7, OSWEGO NY",
+  "Site ID":"04249000"
+  }
+}
+]
+}
