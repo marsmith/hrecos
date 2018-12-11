@@ -1,0 +1,92 @@
+Martyn Smith
+12/10/2018
+
+Process for importing legacy HRECOS CSV tables into mysql/mariadb database
+------------------------------------------------------------------------------
+
+1.  Create new database
+2.  Create new table for each csv ('raw_data' and 'post_data')
+
+"CREATE TABLE IF NOT EXISTS hrecos_test.raw_data (site_name TEXT, `parameter` TEXT, `datetime` TEXT, value FLOAT, flag TEXT, comment TEXT, tz_code TEXT, agency_id TEXT);"
+"CREATE TABLE IF NOT EXISTS hrecos_test.post_data (site_name TEXT, `parameter` TEXT, `datetime` TEXT, value FLOAT, flag TEXT, comment TEXT, tz_code TEXT, agency_id TEXT);"
+
+3.  Import CSV data using DBeaver
+
+Right click on newly created table in database, "Import Data"
+
+4.  Update datetime fields to remove "T" and "Z" from ISO datetime
+
+"UPDATE hrecos_test.raw_data SET `datetime` = REPLACE(`datetime`,'T',' ')"
+"UPDATE hrecos_test.raw_data SET `datetime` = REPLACE(`datetime`,'Z','')"
+
+5.  Copy datetime field to new proper datetime field (not text)
+
+
+
+TRUNCATE TABLE hrecos_test.raw_data2;
+CREATE TABLE IF NOT EXISTS hrecos_test.raw_data (site_name TEXT, `parameter` TEXT, `datetime` TEXT, value FLOAT, flag TEXT, comment TEXT, tz_code TEXT, agency_id TEXT);
+LOAD DATA LOCAL INFILE 'c:/NYBackup/GitHub/hrecos/data_import/test.csv' INTO TABLE hrecos_test.raw_data FIELDS TERMINATED BY ',' ENCLOSED BY '"' IGNORE 1 ROWS;
+UPDATE hrecos_test.raw_data SET `datetime` = STR_TO_DATE(`datetime`, '%Y-%m-%dT%H:%i:%sZ');
+ALTER TABLE hrecos_test.raw_data MODIFY COLUMN `datetime` DATETIME NULL;
+
+
+
+Unique site names:
+HRALBPH
+HRALBPM
+HRBZAKH
+HRBZAKM
+HRLCK8H
+HRLCK8M
+HRMARPH
+HRMARPHS
+HRNOPTH
+HRNOPTM
+HRPMNTH
+HRPMNTM
+HRPR26H
+HRPR26M
+HRPR84H
+HRPR84M
+HRPVSC
+HRREXBR
+HRSCHDH
+HRSCHDM
+HRTVBM
+HRTVBNH
+HRTVBSH
+HRUTICA
+HRWSTPTH
+STCPBY1
+STCPPB
+STGWBR4
+
+Unique parameters:
+CHLA
+DEPTH
+DO
+DOPC
+ELEV
+PH
+SALT
+SPCO
+TURB
+VELMC
+VELNS
+WTMP
+ATMP
+BARO
+DEWP
+GST
+PAR
+RAIN
+RAINDC
+RHUM
+WD
+WDEV
+WSPD
+RAD
+STMP
+ABSP
+COND
+PWL

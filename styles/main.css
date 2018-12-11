@@ -74,7 +74,7 @@ z-index: 10;
 display: none;
 position: relative;
 width: 100%;
-line-height: 70px;
+line-height: 72px;
 padding: 0 10px;
 font-size: 30px;
 color: #ffffff;
@@ -99,7 +99,7 @@ font-family: 'Open Sans', sans-serif;
 }
 
 body {
-padding-top: 70px;
+padding-top: 72px;
 padding-left:470px;
 }
 
@@ -222,7 +222,7 @@ opacity: .5;
 
 #main-menu {
   width: 470px;
-  height: calc(100% - 70px);
+  height: calc(100% - 72px);
   float: left;
   background-color: #20202f;
   margin-top: 65px;
@@ -391,7 +391,7 @@ border: 0;
   }
 
   #main-menu {
-    height: calc(100% - 70px);
+    height: calc(100% - 72px);
   }
 
   .app-name {
