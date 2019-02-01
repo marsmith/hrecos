@@ -1,0 +1,54 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+          "type": "Point",
+          "coordinates":  [ -73.990375,42.828197 ]
+      },
+      "properties": {
+      "Station Name":"MOHAWK RIVER AT LOCK 8 NEAR SCHENECTADY NY",
+      "HRECOS ID":"HRLCK8H",
+      "Site ID":"01354330"
+      }
+    },
+    
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates":  [ -73.954956,41.3860719 ]
+      },
+      "properties": {
+      "Station Name":"HUDSON RIVER AT SOUTH DOCK AT WEST POINT NY",
+      "HRECOS ID":"HRWSTPTH",
+      "Site ID":"01374019"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+         "type": "Point",
+         "coordinates":  [ -73.7768751,42.4996069 ]
+      },
+      "properties": {
+      "Station Name":"HUDSON RIVER NEAR SCHODACK LANDING NY",
+      "HRECOS ID":"HRSCHDH",
+      "Site ID":"0135980207"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+         "type": "Point",
+         "coordinates":  [ -73.88725000,42.85111110 ]
+      },
+      "properties": {
+      "Station Name":"MOHAWK RIVER AT REXFORD NY",
+      "HRECOS ID":"HRREXBR",
+      "Site ID":"01355475"
+      }
+    }
+  ]
+}

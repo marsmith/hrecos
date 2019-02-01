@@ -2,7 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 var pkg = require('./package.json');
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+//var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 var PATHS = {
     dist: path.join(__dirname, 'dist/')
@@ -30,11 +30,12 @@ module.exports = {
         }),
         new webpack.DefinePlugin( {'VERSION': JSON.stringify(pkg.version) }),
         new UglifyJSPlugin(),
-        new BundleAnalyzerPlugin()
+        //new BundleAnalyzerPlugin()
     ],
     devServer: {
         open: true,
         contentBase: PATHS.dist,
-        watchContentBase: true
+        watchContentBase: true,
+        port: 8008
     }
 };

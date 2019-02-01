@@ -1,6 +1,18 @@
 {
   "type": "FeatureCollection",
   "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+          "type": "Point",
+          "coordinates":  [ -73.9388308,41.720591 ]
+      },
+      "properties": {
+      "Station Name":"Marist WQ (sfc & btm)",
+      "HRECOS ID":"HRMARPH",
+      "Site ID":"01372043"
+      }
+    },
  {
    "type": "Feature",
    "geometry": {
@@ -8,7 +20,9 @@
       "coordinates":  [ -75.0284577,43.0197675 ]
    },
    "properties": {
-   "Station Name":"Ilion water quality"
+   "Station Name":"Ilion water quality",
+   "HRECOS ID": "HRUTICA",
+   "Site ID":"01342732"
    }
  },
  {
@@ -18,8 +32,9 @@
       "coordinates":  [ -73.990375,42.828197 ]
    },
    "properties": {
-   "Station Name":"Mohawk River at Lock 8 (hydro)",
-   "Site ID":"HRLCK8H"
+   "Station Name":"MOHAWK RIVER AT LOCK 8 NEAR SCHENECTADY NY",
+   "HRECOS ID":"HRLCK8H",
+   "Site ID":"01354330"
    }
  },
  {
@@ -30,7 +45,8 @@
    },
    "properties": {
    "Station Name":"Port of Albany, NY (hydro)",
-   "Site ID":"HRALBPH"
+   "HRECOS ID":"HRALBPH",
+   "Site ID":"01359165"
    }
  },
  {
@@ -40,7 +56,8 @@
       "coordinates":  [ -73.758914,42.619513 ]
    },
    "properties": {
-   "Station Name":"Albany WQ & weather"
+   "Station Name":"Albany WQ & weather",
+   "HRECOS ID":"HRALBPM"
    }
  },
  {
@@ -50,7 +67,9 @@
       "coordinates":  [ -73.7768751,42.4996069 ]
    },
    "properties": {
-   "Station Name":"Schodack WQ"
+   "Station Name":"HUDSON RIVER NEAR SCHODACK LANDING NY",
+   "HRECOS ID":"HRSCHDH",
+   "Site ID":"0135980207"
    }
  },
  {
@@ -60,7 +79,9 @@
       "coordinates":  [ -73.92532,42.03654 ]
    },
    "properties": {
-   "Station Name":"Tivoli North Bay WQ"
+   "Station Name":"Tivoli North Bay WQ",
+   "HRECOS ID":"HRTVBNH",
+   "Site ID":"4202450735530"
    }
  },
  {
@@ -70,7 +91,9 @@
       "coordinates":  [ -73.92596,42.02704 ]
    },
    "properties": {
-   "Station Name":"Tivoli South Bay WQ"
+   "Station Name":"Tivoli South Bay WQ",
+   "HRECOS ID":"HRTVBSH",
+   "Site ID":"4201370735534"
    }
  },
  {
@@ -80,7 +103,9 @@
       "coordinates":  [ -73.917,42.0182 ]
    },
    "properties": {
-   "Station Name":"Tivoli Bays weather"
+   "Station Name":"Tivoli Bays weather",
+   "HRECOS ID":"HRTVBM",
+   "Site ID":"4201370735534"
    }
  },
  {
@@ -90,19 +115,12 @@
       "coordinates":  [ -73.9426691,41.83184 ]
    },
    "properties": {
-   "Station Name":"Norrie WQ & weather"
+   "Station Name":"Norrie WQ & weather",
+   "HRECOS ID":"HRNOPTH",
+   "Site ID":"4149550735634"
    }
  },
- {
-   "type": "Feature",
-   "geometry": {
-      "type": "Point",
-      "coordinates":  [ -73.9388308,41.720591 ]
-   },
-   "properties": {
-   "Station Name":"Marist WQ (sfc & btm)"
-   }
- },
+
  {
    "type": "Feature",
    "geometry": {
@@ -110,7 +128,9 @@
       "coordinates":  [ -73.954956,41.3860719 ]
    },
    "properties": {
-   "Station Name":"West Pt"
+   "Station Name":"HUDSON RIVER AT SOUTH DOCK AT WEST POINT NY",
+   "HRECOS ID":"HRWSTPTH",
+   "Site ID":"01374019"
    }
  },
  {
@@ -120,7 +140,9 @@
       "coordinates":  [ -73.960004,40.851962 ]
    },
    "properties": {
-   "Station Name":"GWB (inactive)"
+   "Station Name":"GWB (inactive)",
+   "HRECOS ID":"STGWBR4",
+   "Site ID":"4051070735733"
    }
  },
  {
@@ -130,7 +152,9 @@
       "coordinates":  [ -73.8961514,41.0431788 ]
    },
    "properties": {
-   "Station Name":"Piermont WQ & weather"
+   "Station Name":"Piermont WQ & weather",
+   "HRECOS ID":"HRPMNTH",
+   "Site ID":"01376269"
    }
  },
  {
@@ -140,7 +164,9 @@
       "coordinates":  [ -73.9043775,40.9362611 ]
    },
    "properties": {
-   "Station Name":"Beczak WQ & weather"
+   "Station Name":"Beczak WQ & weather",
+   "HRECOS ID":"HRBZAKH",
+   "Site ID":"01376307"
    }
  },
  {
@@ -150,7 +176,9 @@
       "coordinates":  [ -74.0031576,40.7646234 ]
    },
    "properties": {
-   "Station Name":"Pier 84 WQ & weather"
+   "Station Name":"Pier 84 WQ & weather",
+   "HRECOS ID":"HRPR84H",
+   "Site ID":"01376515"
    }
  },
  {
@@ -160,7 +188,9 @@
       "coordinates":  [ -74.022806,40.74325 ]
    },
    "properties": {
-   "Station Name":"Castle Point sfc"
+   "Station Name":"Castle Point sfc",
+   "HRECOS ID":"STCPBY1",
+   "Site ID":"4044360740123"
    }
  },
  {
@@ -170,7 +200,9 @@
       "coordinates":  [ -74.0156651,40.7215509 ]
    },
    "properties": {
-   "Station Name":"Pier 26 WQ & weather"
+   "Station Name":"Pier 26 WQ & weather",
+   "HRECOS ID":"HRPR26H",
+   "Site ID":"01376520"
    }
  },
  {
@@ -180,7 +212,9 @@
       "coordinates":  [ -74.123083,40.71325 ]
    },
    "properties": {
-   "Station Name":"PVSC WQ"
+   "Station Name":"PVSC WQ",
+   "HRECOS ID":"HRPVSC",
+   "Site ID":"01392650"
    }
  }
 ]

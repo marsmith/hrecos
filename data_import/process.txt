@@ -1,6 +1,23 @@
 Martyn Smith
 12/10/2018
 
+
+//for testing on WSL ubuntu:
+sudo service mysql start
+
+//change apache port
+sudo nano /etc/apache2/ports.conf
+
+look for or if not there add:
+Listen 8080
+
+//start apache
+sudo service apache2 start
+
+
+
+
+
 Process for importing legacy HRECOS CSV tables into mysql/mariadb database
 ------------------------------------------------------------------------------
 
@@ -26,6 +43,12 @@ Right click on newly created table in database, "Import Data"
 TRUNCATE TABLE hrecos_test.raw_data2;
 CREATE TABLE IF NOT EXISTS hrecos_test.raw_data (site_name TEXT, `parameter` TEXT, `datetime` TEXT, value FLOAT, flag TEXT, comment TEXT, tz_code TEXT, agency_id TEXT);
 LOAD DATA LOCAL INFILE 'c:/NYBackup/GitHub/hrecos/data_import/test.csv' INTO TABLE hrecos_test.raw_data FIELDS TERMINATED BY ',' ENCLOSED BY '"' IGNORE 1 ROWS;
+
+
+mysqlimport -h mysql.natweb.usgs.gov -P 3306 -u hrecos -prsT13zKDN9fp9EVI --local --ignore-lines=1 --fields-enclosed-by='\"' --fields-terminated-by=',' --lines-terminated-by='\n' hrecos raw_data.csv -v
+
+
+
 UPDATE hrecos_test.raw_data SET `datetime` = STR_TO_DATE(`datetime`, '%Y-%m-%dT%H:%i:%sZ');
 ALTER TABLE hrecos_test.raw_data MODIFY COLUMN `datetime` DATETIME NULL;
 

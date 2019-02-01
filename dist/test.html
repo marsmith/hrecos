@@ -10,19 +10,120 @@
             $("#driver").click(function(event){
 
                 var inputRequest = {
-                    sites:'HRALBPH'
-                    // ,
-                    // parameters:'CHLA',
-                    // startDT:'2011-01-04',
-                    // endDT:'2011-01-05'
+                    sites:'HRALBPH',
+                    parameters:'DO,TURB',
+                    startDT:'2017-10-04',
+                    endDT:'2017-10-05'
                 }
                 $.ajax({
-                    url: './connect.php', 
+                    url: './query.php', 
                     data: inputRequest, 
                     type: 'GET',
+                    dataType: "json",
                     success: function(data) {
 
+                        //emulate NWIS response
+                        var timeSeries = [];
+       
                         console.log( data);
+
+                        $.each(data, function( index, item ) {
+                            console.log('here',item);
+                            var matchFound = false;
+
+                            //check if we have this item in our timeSeries
+                            if (timeSeries.length > 0) {
+
+                                $.each(timeSeries, function( index, siteParamCombo) {
+                                    console.log('checking:',siteParamCombo.sourceInfo.siteName,item.site_name,       siteParamCombo.variable.variableDescription,item.parameter)
+
+                                    if (siteParamCombo.sourceInfo.siteName === item.site_name &&        siteParamCombo.variable.variableDescription === item.parameter) {
+
+                                        matchFound = true;
+                                        console.log('match',item.parameter, siteParamCombo, timeSeries.length);
+
+                                        //we have this site/param combo already so just append value
+                                        siteParamCombo.values[0].value.push({value: item.value,dateTime:item.datetime})
+                                    }
+                                });
+
+                                //create new siteParamCombo for new paramater
+                                if (!matchFound) {
+                                                   
+                                    var siteParamCombo = {
+                                        name: item.site_name,
+                                        values: [{
+                                            value: [{
+                                                value: item.value,
+                                                dateTime:item.datetime
+                                            }]
+                                        }],
+                                        variable: {
+                                            variableName: item.parameter,
+                                            variableDescription: item.parameter,
+                                            unit: {
+                                                //look up unit code somewhere
+                                                unitCode: ''
+                                            }
+                                        },
+                                        sourceInfo: {
+                                            siteName: item.site_name,
+                                            siteCode: [{
+                                                agencyCode: item.agency_id,
+                                                network: 'HRECOS',
+                                                //look up equivalent NWIS site ID here
+                                                value: item.site_name
+                                            }],
+
+                                        }
+                                    };
+
+                                    //push new siteParamCombo
+                                    timeSeries.push(siteParamCombo);
+
+                                    console.log('NO MATCH, new timeseries:',timeSeries)
+                                }
+                            }
+
+                            //create new item
+                            else {
+                                
+                                var siteParamCombo = {
+                                    name: item.site_name,
+                                    values: [{
+                                        value: [{
+                                            value: item.value,
+                                            dateTime:item.datetime
+                                        }]
+                                    }],
+                                    variable: {
+                                        variableName: item.parameter,
+                                        variableDescription: item.parameter,
+                                        unit: {
+                                            //look up unit code somewhere
+                                            unitCode: ''
+                                        }
+                                    },
+                                    sourceInfo: {
+                                        siteName: item.site_name,
+                                        siteCode: [{
+                                            agencyCode: item.agency_id,
+                                            network: 'HRECOS',
+                                            //look up equivalent NWIS site ID here
+                                            value: item.site_name
+                                        }],
+
+                                    }
+                                };
+
+                                //push new siteParamCombo
+                                timeSeries.push(siteParamCombo);
+                            }
+       
+
+                        });
+
+                        console.log('timeSeries:',timeSeries);
 
                       
                     }
