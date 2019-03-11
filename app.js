@@ -40,7 +40,9 @@ var MapZoom = 8; //set initial map zoom
 //var sitesURL = './sitesGeoJSON.json';
 //var sitesURL = './HRECOSsitesGeoJSON.json';
 var sitesURL = './HRECOSsitesGeoJSONsubset.json';
-var NWISivURL = 'https://waterservices.usgs.gov/nwis/iv/'; 
+var NWISivURL = 'https://nwis.waterservices.usgs.gov/nwis/iv/';
+var HRECOSurl = 'http://localhost:8080/hrecos/query.php'; 
+var crossOverDate = '2019-03-03';
 //END user config variables 
 
 //START global variables
@@ -50,41 +52,40 @@ var layer, sitesLayer, layerLabels;
 var seriesData;
 
 var parameterList = [
-  {pcode:'00010', HRECOScode: 'WTMP', desc:'Temperature, water'},
-  {pcode:'00020', HRECOScode: 'ATMP', desc:'Temperature, air'},
+  {pcode:'00010', HRECOScode: 'WTMP', desc:'Temperature, water', unit:'degrees Celsius'},
+  {pcode:'00020', HRECOScode: 'ATMP', desc:'Temperature, air', unit:'degrees Celsius'},
 
-  {pcode:'00036', HRECOScode: 'WD', desc:'Wind direction'},
+  {pcode:'00036', HRECOScode: 'WD', desc:'Wind direction', unit:'degrees clockwise from true north'},
 
-  {pcode:'00045', HRECOScode: 'RAIN', desc:'Precipitation'},
+  {pcode:'00045', HRECOScode: 'RAIN', desc:'Precipitation', unit:'total, inches'},
 
-  {pcode:'00052', HRECOScode: 'RHUM', desc:'Relative humidity'},
+  {pcode:'00052', HRECOScode: 'RHUM', desc:'Relative humidity', unit:'percent'},
 
-  {pcode:'00065', HRECOScode: 'DEPTH', desc:'Gage height'},
+  {pcode:'00065', HRECOScode: 'DEPTH', desc:'Gage height', unit:'feet'},
 
-  {pcode:'00095', HRECOScode: 'SPCO', desc:'Specific cond at 25C'},
+  {pcode:'00095', HRECOScode: 'SPCO', desc:'Specific cond at 25C', unit:'microsiemens per centimeter'},
 
-  {pcode:'00300', HRECOScode: 'DO', desc:'Dissolved oxygen'},
-  {pcode:'00301', HRECOScode: 'DOPC', desc:'Diss oxygen,%saturtn'},
+  {pcode:'00300', HRECOScode: 'DO', desc:'Dissolved oxygen, water, unfiltered', unit:'mg/l'},
+  {pcode:'00301', HRECOScode: 'DOPC', desc:'Diss oxygen,%saturtn', unit:'percent of saturation'},
 
-  {pcode:'00400', HRECOScode: 'PH', desc:'pH'},
+  {pcode:'00400', HRECOScode: 'PH', desc:'pH', unit:'standard units'},
 
-  {pcode:'62620', HRECOScode: 'ELEV', desc:'Elevation, ocean/est'},
+  {pcode:'62620', HRECOScode: 'ELEV', desc:'Elevation, ocean/est', unit:'elevation above NAVD 1988, feet'},
 
-  {pcode:'63680', HRECOScode: 'TURBF', desc:'Turbidity, Form Neph'},
+  {pcode:'63680', HRECOScode: 'TURBF', desc:'Turbidity, Form Neph', unit:'formazin nephelometric units (FNU)'},
 
-  {pcode:'70969', HRECOScode: '', desc:'DCP battery voltage'},
+  {pcode:'70969', HRECOScode: '', desc:'DCP battery voltage', unit:'volts'},
 
-  {pcode:'75969', HRECOScode: 'BARO', desc:'BarometricPressUncor'},
+  {pcode:'75969', HRECOScode: 'BARO', desc:'BarometricPressUncor', unit:'millibars'},
 
-  {pcode:'72253', HRECOScode: 'STEMP', desc:'Temperature, soil'},
+  {pcode:'72253', HRECOScode: 'STEMP', desc:'Temperature, soil', unit:'deg C'},
 
-  {pcode:'82127', HRECOScode: 'WSPD', desc:'Wind speed'},
+  {pcode:'82127', HRECOScode: 'WSPD', desc:'Wind speed', unit:'knots'},
 
-  {pcode:'99989', HRECOScode: 'PAR', desc:'PAR, tota'}
+  {pcode:'99989', HRECOScode: 'PAR', desc:'PAR, total', unit:''}
 
 ];
 
-var ajaxQueue = $({});
 //END global variables
 
 //instantiate map
@@ -165,10 +166,14 @@ function initDatePicker() {
   var dateObj = new Date();
   var currentDate = formatDate(dateObj);
   var lastWeekDate = formatDate(dateObj.getTime() - (7 * 24 * 60 * 60 * 1000));
+
+  // var currentDate = '2018-06-04';
+  // var lastWeekDate = '2018-06-03';
   console.log('dates:',currentDate,lastWeekDate);
 
   $('#startDate').val(lastWeekDate);
   $('#endDate').val(currentDate);
+
 
 }
 
@@ -294,33 +299,56 @@ function getData() {
     requestData.endDT = $('#endDate').val();
   }
 
+
   //add internal access code
   requestData.access = '3';
 
 
 
-  //here is where we check if we need to query legacy data
-  if (moment(requestData.startDT).isSameOrBefore('2018-12-31')) {
-    console.log('IM HERE');
+  //  1.  if both dates before 12-31-18 then purely legacy query
+  if (moment(requestData.startDT).isSameOrBefore(crossOverDate) && moment(requestData.endDT).isSameOrBefore(crossOverDate)) {
+    console.log('ALL LEGACY DB QUERY');
 
     //make copy of the request, make some changes to the parameters for PHP query
     var legacyRequestData = JSON.parse(JSON.stringify(requestData));
-
     legacyRequestData.parameterCd = lookupHRECOScode(requestData.parameterCd);
-
     legacyRequestData.sites = lookupHRECOSsite(requestData.sites);
 
-    // requestData.parameterCd = 'DO';
-    // requestData.sites = 'HRALBPH';
-    legacyRequestData.source = 'legacy';
+    //add hours
+    legacyRequestData.startDT = moment(legacyRequestData.startDT + ' 00:00:00').add(5, 'hours').format('YYYY-MM-DD HH:mm:ss');
+    legacyRequestData.endDT = moment(legacyRequestData.endDT + ' 23:59:59').add(5, 'hours').format('YYYY-MM-DD HH:mm:ss');
+    console.log('times:',legacyRequestData.startDT, legacyRequestData.endDT);
 
+    legacyRequestData.source = 'legacy';
     requestDatas.push(legacyRequestData);
     
   }
 
-  //NEED TO ALSO PUT IN CHECK FOR END DATE
-  else {
-    //push the main request
+  //  2.  need to query both if the dates span over 12-31-18
+  if (moment(requestData.startDT).isSameOrBefore(crossOverDate) && moment(requestData.endDT).isAfter(crossOverDate)) {
+    console.log('QUERY SPAN DB CROSSOVER, MAKING 2 QUERIES');
+
+    //make copy of the request, make some changes to the parameters for PHP query
+    var legacyRequestData = JSON.parse(JSON.stringify(requestData));
+    legacyRequestData.parameterCd = lookupHRECOScode(requestData.parameterCd);
+    legacyRequestData.sites = lookupHRECOSsite(requestData.sites);
+    
+    //add hours
+    legacyRequestData.startDT = moment(legacyRequestData.startDT + ' 00:00:00').add(5, 'hours').format('YYYY-MM-DD HH:mm:ss');
+    legacyRequestData.endDT = moment(legacyRequestData.endDT + ' 23:59:59').add(5, 'hours').format('YYYY-MM-DD HH:mm:ss');
+    console.log('times:',legacyRequestData.startDT, legacyRequestData.endDT);
+
+    legacyRequestData.source = 'legacy';
+    requestDatas.push(legacyRequestData);
+
+    //have to make two queries here so also push original
+    requestDatas.push(requestData);
+    
+  }
+
+  //  3.  otherwise just regular NWIS query
+  if (moment(requestData.startDT).isAfter(crossOverDate) && moment(requestData.endDT).isAfter(crossOverDate)) {
+    console.log('REGULAR NWIS QUERY ONLY');
     requestDatas.push(requestData);
   }
 
@@ -342,13 +370,13 @@ function getData() {
   $(requestDatas).each(function (i, inputRequest) {
 
     //overwrite url if source is legacy
-    if (inputRequest.source == 'legacy') NWISivURL = 'http://localhost:8080/hrecos/query.php';
-    else NWISivURL = 'https://waterservices.usgs.gov/nwis/iv/';
+    var url = NWISivURL;
+    if (inputRequest.source == 'legacy') url = HRECOSurl;
 
-    console.log('input Request:',NWISivURL, inputRequest);
+    console.log('input Request:',url, inputRequest);
     
-    $.ajaxQueue({
-      url: NWISivURL,  
+    $.ajax({
+      url: url,  
       dataType: 'json',
       data: inputRequest, 
       type: 'GET',
@@ -379,6 +407,7 @@ function getData() {
             //check if we have this parameter in our time series yet
             var timeSeriesExists = false;
             $(processedData.value.timeSeries).each(function (i, timeSeries) {
+              //console.log("HERE",value.parameter, timeSeries.variable.variableCode[0])
               if (value.parameter === timeSeries.variable.variableCode[0].HRECOSvalue && value.site_name === timeSeries.sourceInfo.siteNameHRECOS) timeSeriesExists = true;
             });
             
@@ -386,10 +415,12 @@ function getData() {
             //if it doesnt exist add the new object
             if (!timeSeriesExists) {
 
-              console.log('this one doesnt exist, creating new time series:',value);
+              
 
               var siteInfo = lookupNWISsite(value.site_name);
-              var USGSpcode = lookupNWISpcode(value.parameter);
+              var parameterInfo = lookupParameter(value.parameter);
+
+              console.log('this one doesnt exist, creating new time series:',value,siteInfo, parameterInfo) ;
 
               var timeSeries = {
                 sourceInfo: {
@@ -403,15 +434,15 @@ function getData() {
                 },
                 variable: {
                   variableCode:[{
-                    value: USGSpcode,
+                    value: parameterInfo.pcode,
                     HRECOSvalue: value.parameter,
                     network:value.agency_id,
                   }],
-                  variableName:"Gage height, ft",
-                  variableDescription:"Gage height, feet",
-                  valueType:"Derived Value",
+                  variableName: parameterInfo.desc,
+                  variableDescription: parameterInfo.desc + ', ' + parameterInfo.unit,
+                  valueType: '',
                   unit:{
-                    unitCode:"ft"
+                    unitCode:parameterInfo.unit
                   }
                 },
                 values: [{
@@ -421,11 +452,11 @@ function getData() {
                       dateTime: value.datetime
                     }],
                     method: [{
-                      methodDescription: "[HRECOS legacy]",
+                      methodDescription: "[legacy]",
                       methodID: 99999
                     }]
                 }],
-                name: "USGS:" + siteInfo["Site ID"] + ":" + USGSpcode + ":00000"
+                name: "USGS:" + siteInfo["Site ID"] + ":" + parameterInfo.pcode + ":00000"
               }
 
               console.log('new timeseries item:',timeSeries)
@@ -460,67 +491,78 @@ function getData() {
           processedData = data;
         }
 
-        
-        //else {
-          if (processedData.value.timeSeries.length <= 0) {
-            alert('Found an NWIS site [' + siteIDs + '] but it had no data in waterservices for [' +  parameterCodes + ']');
-            return;
-          }
-  
-          var startTime = processedData.value.queryInfo.criteria.timeParam.beginDateTime; 
-      
-          $(processedData.value.timeSeries).each(function (i, siteParamCombo) {
-  
-            console.log('siteParamCombo',siteParamCombo)
-  
-            $(siteParamCombo.values).each(function (i, value) {
-  
-              console.log('value here:',value);
-  
-              //check to make sure there are some values
-              if (value.value.length === 0) return;
-  
-              var valueArray = value.value.map(function(item) {
-                var seconds = new Date(item.dateTime)/1;
-                //return item.value/1;
-                return [seconds,item.value/1];
-              });
-  
-              var description;
-              if (value.method[0].methodDescription.length > 0) description = siteParamCombo.variable.variableDescription + ', ' + value.method[0].methodDescription;
-              else description = siteParamCombo.variable.variableDescription;
-  
-              var name = siteParamCombo.sourceInfo.siteName + ' | ' + $('<div>').html(description).text();
-        
-              var series = {
-                showInLegend: true,
-                values: value,
-                data: valueArray,
-                color: getRandomColor(),
-                siteID: siteParamCombo.sourceInfo.siteCode[0].value,
-                siteName: siteParamCombo.sourceInfo.siteName,
-                siteCode: siteParamCombo.name,
-                variableDescription: description,
-                variableName: siteParamCombo.variable.variableName,
-                unit: siteParamCombo.variable.unit.unitCode,
-                name:name,
-              };
+        if (processedData.value.timeSeries.length <= 0) {
+          if (processedData.declaredType === 'legacyDB') alert('Found a HRECOS site [' + siteIDs + '] but it had no data in the legacy HRECOS DB for [' +  parameterCodes + ']');
+          else alert('Found an NWIS site [' + siteIDs + '] but it had no data in waterservices for [' +  parameterCodes + ']');
+          console.log('no values found for:', processedData)
+          //return;
+        }
+
+        var startTime = processedData.value.queryInfo.criteria.timeParam.beginDateTime; 
     
-              //update the name to include the year if compare years is on
-              if (compareYears) {
-                series.name = processedData.value.queryInfo.note[1].value.split('INTERVAL[')[1].split('-')[0] + ' | ' + siteParamCombo.sourceInfo.siteName + ' | ' + $('<div>').html(siteParamCombo.variable.variableName).text(); 
-              }
-        
-              seriesData.push(series);
+        $(processedData.value.timeSeries).each(function (i, siteParamCombo) {
+
+          console.log('siteParamCombo',siteParamCombo)
+
+          $(siteParamCombo.values).each(function (i, value) {
+
+            console.log('value here:',value);
+
+            //check to make sure there are some values
+            if (value.value.length === 0) return;
+
+            var valueArray = value.value.map(function(item) {
+              var seconds = new Date(item.dateTime)/1;
+
+              //subtract 5 hours if data is from HRECOS
+              if (value.method[0].methodDescription === '[legacy]') seconds = seconds - 18000000;
+              
+              //return item.value/1;
+              return [seconds,item.value/1];
             });
+
+            var description;
+            console.log('method description:', siteParamCombo.variable.variableDescription, value.method[0].methodDescription)
+            if (value.method[0].methodDescription.length > 0) description = siteParamCombo.variable.variableDescription + ', ' + value.method[0].methodDescription;
+            else description = siteParamCombo.variable.variableDescription;
+
+            var name = siteParamCombo.sourceInfo.siteName + ' | ' + $('<div>').html(description).text();
+
+            //replace this string for clarity
+            name = name.replace('[HRECOS]','[NWIS]');
+      
+            var series = {
+              showInLegend: true,
+              values: value,
+              data: valueArray,
+              color: getRandomColor(),
+              siteID: siteParamCombo.sourceInfo.siteCode[0].value,
+              siteName: siteParamCombo.sourceInfo.siteName,
+              siteCode: siteParamCombo.name,
+              variableDescription: description,
+              variableName: siteParamCombo.variable.variableName,
+              unit: siteParamCombo.variable.unit.unitCode,
+              name:name,
+            };
+  
+            //update the name to include the year if compare years is on
+            if (compareYears) {
+              series.name = processedData.value.queryInfo.note[1].value.split('INTERVAL[')[1].split('-')[0] + ' | ' + siteParamCombo.sourceInfo.siteName + ' | ' + $('<div>').html(siteParamCombo.variable.variableName).text(); 
+            }
+      
+            seriesData.push(series);
           });
-        //}
+        });
 
         //check if were done
         if (counter === requestDatas.length) {
-          showGraph(startTime,seriesData);
+          console.log('hiding loader');
+          $('#loading').hide();
         }
 
+
+
+        showGraph(startTime,seriesData);
       }
     });
   });
@@ -552,6 +594,12 @@ function showGraph(startTime,seriesData) {
   
   //chart init object
   var chartSetup = {
+    legend: {
+      itemStyle: {
+        color: '#000000',
+        fontWeight: 'normal'
+      }
+    },
 		chart: {
 			type: 'line',
 			spacingTop: 20,
@@ -571,7 +619,16 @@ function showGraph(startTime,seriesData) {
 			enabled: false
     },
     tooltip: {
-      shared: true
+      shared: true,
+      useHTML: true,
+      pointFormatter: function() {
+        var point = this,
+          series = point.series,
+          legendSymbol = "<svg width='20' height='20'>" + series.legendSymbol.element.outerHTML + "</svg>";
+  
+        return "<div style='width: 400px; white-space:normal;'>" + legendSymbol + series.name + ": <b>" + point.y + "</b><br/></div>";
+  
+      }
     },
 		xAxis: {
 			type: "datetime",
@@ -775,7 +832,7 @@ function loadSites() {
     },
     complete: function () {
       // call a function on complete 
-      $('#loading').hide();
+      
     }
   });
 }
@@ -839,13 +896,13 @@ function lookupHRECOSsite(NWISsites) {
 
 }
 
-function lookupNWISpcode(HRECOSparamCode) {
+function lookupParameter(HRECOSparamCode) {
   var response;
   console.log('looking up NWIS param codes for:',HRECOSparamCode)
   $(parameterList).each(function (i, parameter) {
     if(HRECOSparamCode === parameter.HRECOScode) {
       console.log('MATCH FOUND for:', HRECOSparamCode);
-      response = parameter.pcode;
+      response = parameter;
     }
   });
   return response;
@@ -863,25 +920,3 @@ function lookupNWISsite(HRECOSid) {
   });
   return response;
 }
-
-$.ajaxQueue = function(ajaxOpts) {
-  // Hold the original complete function
-  var oldComplete = ajaxOpts.complete;
-
-  // Queue our ajax request
-  ajaxQueue.queue(function(next) {
-    // Create a complete callback to invoke the next event in the queue
-    ajaxOpts.complete = function() {
-      // Invoke the original complete if it was there
-      if (oldComplete) {
-        oldComplete.apply(this, arguments);
-      }
-
-      // Run the next query in the queue
-      next();
-    };
-
-    // Run the query
-    $.ajax(ajaxOpts);
-  });
-};

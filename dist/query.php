@@ -16,7 +16,7 @@ $queryStartDT = $_GET['startDT'];
 $queryEndDT = $_GET['endDT'];
 
 //start query
-$sql = "SELECT * FROM hrecos_test.raw_data WHERE ";
+$sql = "SELECT * FROM hrecos_test.raw WHERE ";
 
 //get site list
 $haveSites = FALSE;
@@ -42,7 +42,7 @@ if(isset($queryStartDT) && !empty($queryStartDT) && isset($queryEndDT) && !empty
 }
 
 //limit records for testing
-$sql .= " LIMIT 100;";
+//$sql .= " LIMIT 100;";
 //echo $sql;
 
 //$sql2 = "SELECT * FROM hrecos_test.raw_data WHERE site_name='HRALBPH' LIMIT 100";
@@ -67,36 +67,6 @@ print json_encode(array(
     ),
     "values" => $rows
 ));
-
-// emulate USGS waterservices response
-// print json_encode(array(
-//     "value" => array(
-//         "queryInfo" => array(
-//             "criteria" => array(
-//                 "timeParam" => array(
-//                     "beginDateTime" => $queryStartDT,
-//                     "endDateTime" => $queryEndDT
-//                 )
-//             )
-//         ),
-//         "timeSeries" => array(
-//             "values" => [
-//                 array(
-//                     "value" => $rows,
-//                     "method" => [
-//                         array(
-//                             "methodDescription" => ""
-//                         ) 
-//                     ]
-//                 )
-//             ],
-//             "variable" => array(
-//                 "variableDescription" => 
-//             )
-//         )
-//     )
-    
-// ));
 
 mysqli_close($dbConnection);
 ?> 

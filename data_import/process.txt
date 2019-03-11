@@ -42,16 +42,14 @@ Right click on newly created table in database, "Import Data"
 
 TRUNCATE TABLE hrecos_test.raw_data2;
 CREATE TABLE IF NOT EXISTS hrecos_test.raw_data (site_name TEXT, `parameter` TEXT, `datetime` TEXT, value FLOAT, flag TEXT, comment TEXT, tz_code TEXT, agency_id TEXT);
-LOAD DATA LOCAL INFILE 'c:/NYBackup/GitHub/hrecos/data_import/test.csv' INTO TABLE hrecos_test.raw_data FIELDS TERMINATED BY ',' ENCLOSED BY '"' IGNORE 1 ROWS;
+LOAD DATA LOCAL INFILE 'C:/NYBackup/GitHub/hrecos/data_import/hrecos_2019-03-06/post.csv' INTO TABLE hrecos_test.post FIELDS TERMINATED BY ',' ENCLOSED BY '"' IGNORE 1 ROWS;
 
 
-mysqlimport -h mysql.natweb.usgs.gov -P 3306 -u hrecos -prsT13zKDN9fp9EVI --local --ignore-lines=1 --fields-enclosed-by='\"' --fields-terminated-by=',' --lines-terminated-by='\n' hrecos raw_data.csv -v
+mysqlimport -h mysql.natweb.usgs.gov -P 3306 -u hrecos -p rsT13zKDN9fp9EVI --local --ignore-lines=1 --fields-enclosed-by='\"' --fields-terminated-by=',' --lines-terminated-by='\n' hrecos raw_data.csv -v
 
 
-
-UPDATE hrecos_test.raw_data SET `datetime` = STR_TO_DATE(`datetime`, '%Y-%m-%dT%H:%i:%sZ');
-ALTER TABLE hrecos_test.raw_data MODIFY COLUMN `datetime` DATETIME NULL;
-
+CREATE TABLE IF NOT EXISTS hrecos_test.post (site_name TEXT, `parameter` TEXT, `datetime` DATETIME, value FLOAT, flag TEXT, comment TEXT, tz_code TEXT, agency_id TEXT);
+mysqlimport -h localhost -P 3306 -u hawdis -pabc123 --local --ignore-lines=1 --fields-enclosed-by='\"' --fields-terminated-by=',' --lines-terminated-by='\n' hrecos_test post.csv -v
 
 
 Unique site names:
