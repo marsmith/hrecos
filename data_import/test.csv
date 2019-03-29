@@ -1,4 +1,0 @@
-site_name, parameter, datetime, value, flag, comment, tz_code, agency_id
-"HRALBPH","DO","2017-10-01T10:45:00Z",7.82,"0","","EST","HRECOS"
-"HRALBPH","DO","2017-10-01T10:55:00Z",6.72,"0","","EST","HRECOS"
-"HRALBPH","DO","2017-10-01T11:05:00Z",5.84,"0","","EST","HRECOS"

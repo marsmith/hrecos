@@ -1,5 +1,5 @@
 Martyn Smith
-12/10/2018
+3/29/2019
 
 Process for importing legacy HRECOS CSV tables into mysql/mariadb database
 ------------------------------------------------------------------------------
@@ -23,7 +23,7 @@ Remote import (Final):
 1) CREATE TABLE IF NOT EXISTS hrecos.post (site_name TEXT, `parameter` TEXT, `datetime` DATETIME, value FLOAT, flag TEXT, comment TEXT, tz_code TEXT, agency_id TEXT);
 2) mysqlimport -h mysql.natweb.usgs.gov -P 3306 -u hrecos -prsT13zKDN9fp9EVI --local --ignore-lines=1 --fields-terminated-by=',' --lines-terminated-by='\n' hrecos 3) post.csv -v
 
-
+ .
 
 Appendix
 ------------------------------
