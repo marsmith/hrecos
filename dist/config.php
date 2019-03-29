@@ -4,6 +4,7 @@
 $servername = "localhost";
 $username = "hawdis";
 $password = "abc123";
-$dbname = "hrecos_test";
+$dbname = "hrecos";
+$tablename = "raw";
 
 ?>

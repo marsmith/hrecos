@@ -49,6 +49,43 @@
       "HRECOS ID":"HRREXBR",
       "Site ID":"01355475"
       }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+         "type": "Point",
+         "coordinates":  [ -73.75891670,42.61952778 ]
+      },
+      "properties": {
+      "Station Name":"HUDSON RIVER AT PORT OF ALBANY NY",
+      "HRECOS ID":"HRALBPH",
+      "Site ID":"01359165"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+          "type": "Point",
+          "coordinates":  [ -73.9388308,41.720591 ]
+      },
+      "properties": {
+      "Station Name":"HUDSON RIVER NEAR POUGHKEEPSIE NY",
+      "HRECOS ID":"HRMARPH",
+      "Site ID":"01372043"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+         "type": "Point",
+         "coordinates":  [ -73.8961514,41.0431788 ]
+      },
+      "properties": {
+      "Station Name":"HUDSON RIVER AT PIERMONT NY",
+      "HRECOS ID":"HRPMNTH",
+      "Site ID":"01376269"
+      }
     }
+
   ]
 }

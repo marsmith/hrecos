@@ -8,7 +8,7 @@
           "coordinates":  [ -73.9388308,41.720591 ]
       },
       "properties": {
-      "Station Name":"Marist WQ (sfc & btm)",
+      "Station Name":"HUDSON RIVER NEAR POUGHKEEPSIE NY",
       "HRECOS ID":"HRMARPH",
       "Site ID":"01372043"
       }
@@ -44,7 +44,7 @@
       "coordinates":  [ -73.8871993,42.8510943 ]
    },
    "properties": {
-   "Station Name":"Port of Albany, NY (hydro)",
+   "Station Name":"HUDSON RIVER AT PORT OF ALBANY NY",
    "HRECOS ID":"HRALBPH",
    "Site ID":"01359165"
    }
@@ -152,7 +152,7 @@
       "coordinates":  [ -73.8961514,41.0431788 ]
    },
    "properties": {
-   "Station Name":"Piermont WQ & weather",
+   "Station Name":"HUDSON RIVER AT PIERMONT NY",
    "HRECOS ID":"HRPMNTH",
    "Site ID":"01376269"
    }
@@ -212,10 +212,22 @@
       "coordinates":  [ -74.123083,40.71325 ]
    },
    "properties": {
-   "Station Name":"PVSC WQ",
+   "Station Name":"Passaic River at PVSC at Newark, NJ",
    "HRECOS ID":"HRPVSC",
    "Site ID":"01392650"
    }
- }
+ },
+ {
+  "type": "Feature",
+  "geometry": {
+     "type": "Point",
+     "coordinates":  [ -73.88725000,42.85111110 ]
+  },
+  "properties": {
+  "Station Name":"MOHAWK RIVER AT REXFORD NY",
+  "HRECOS ID":"HRREXBR",
+  "Site ID":"01355475"
+  }
+  }
 ]
 }

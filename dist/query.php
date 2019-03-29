@@ -16,7 +16,7 @@ $queryStartDT = $_GET['startDT'];
 $queryEndDT = $_GET['endDT'];
 
 //start query
-$sql = "SELECT * FROM hrecos_test.raw WHERE ";
+$sql = "SELECT * FROM ". $dbname . "." . $tablename . " WHERE ";
 
 //get site list
 $haveSites = FALSE;
@@ -38,7 +38,7 @@ if(isset($queryParameters) && !empty($queryParameters)){
 //get dates
 if(isset($queryStartDT) && !empty($queryStartDT) && isset($queryEndDT) && !empty($queryEndDT)){
     if ($haveParameters || $haveSites) { $sql .= " AND ";};
-    $sql .= "`datetime` BETWEEN '".$queryStartDT."' AND '" .$queryEndDT."'";
+    $sql .= "`datetime` >= '".$queryStartDT."' AND `datetime` <= '".$queryEndDT."'";
 }
 
 //limit records for testing

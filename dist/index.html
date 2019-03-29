@@ -4,6 +4,7 @@
     <meta name="author" content="Martyn Smith - USGS NY WSC">
 	<link rel="copyright" href="license.txt">
     <title>HRECOS</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="./bundle.js"></script>  
   </head>
@@ -177,8 +178,7 @@
                             <a href="https://www.doi.gov/">U.S. Department of the Interior</a>
                             <a href="https://www.doioig.gov/">DOI Inspector General</a>
                             <a href="https://www.whitehouse.gov/">White House</a>
-                            <a href="https://www.whitehouse.gov/omb/e-gov/">E-gov</a>
-                            <a href="https://www.whitehouse.gov/open">Open Government</a>
+                            <a href="https://www.whitehouse.gov/omb/management/egov/">E-gov</a>
                             <a href="https://www.doi.gov/pmb/eeo/no-fear-act">No Fear Act</a>
                             <a href="https://www2.usgs.gov/foia">FOIA</a>
                             <!--/ footer nav links -->      
@@ -215,7 +215,7 @@
             </div>
         </div>
     </div>
-    <div id="graphModal" class="modal fade"  tabindex="-1" role="dialog" >
+    <div id="graphModal" class="modal fade"  tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -234,9 +234,10 @@
                             <span>Requesting Data...</span>
                         </div>
                     </div>
+                    <div id="graphStatus"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="downloadData" class="btn btn-success">Download Data</button>
+                    <button type="button" id="downloadData" class="btn btn-success" disabled>Download Data</button>
                         
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
