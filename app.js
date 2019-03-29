@@ -16,7 +16,7 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
 import 'leaflet/dist/leaflet.css';
-import 'marker-creator/stylesheets/markers.css';
+import 'marker-creator/stylesheets/css/markers.css';
 import 'select2/dist/css/select2.css';
 import 'bootstrap-datepicker/dist/css/bootstrap-datepicker.css';
 import './styles/main.css';
@@ -170,7 +170,9 @@ $(document).ready(function () {
 
 function abortAllRequests() {
   console.log('Aborting all AJAX requests...')
-  requests.forEach(request => request.abort());
+  requests.forEach(function(request) {
+    request.abort();
+  });
 }
 
 function initDatePicker() {

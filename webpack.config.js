@@ -2,7 +2,6 @@ var path = require('path');
 var webpack = require('webpack');
 var pkg = require('./package.json');
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-//var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 var PATHS = {
     dist: path.join(__dirname, 'dist/')
@@ -19,7 +18,9 @@ module.exports = {
             { test: /\.css$/, use: ['style-loader', 'css-loader' ] },
             { test: /\.png$/, loader: 'url-loader?limit=8192', query: { mimetype: 'image/png' } },
             { test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/, loader: 'url-loader' },
-            { test: /\.js?$/, exclude: /node_modules/, loader: 'babel-loader' },
+            { test: /\.js?$/, exclude: /node_modules/, use: {
+                loader: "babel-loader",
+            } },
             { test: /\.html$/, loader: 'raw-loader' }
         ]
     },

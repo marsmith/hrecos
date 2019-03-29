@@ -17,10 +17,10 @@
    "type": "Feature",
    "geometry": {
       "type": "Point",
-      "coordinates":  [ -75.0284577,43.0197675 ]
+      "coordinates":  [ -75.02847220,43.01975000 ]
    },
    "properties": {
-   "Station Name":"Ilion water quality",
+   "Station Name":"MOHAWK RIVER AT ILION NY",
    "HRECOS ID": "HRUTICA",
    "Site ID":"01342732"
    }
@@ -185,13 +185,25 @@
    "type": "Feature",
    "geometry": {
       "type": "Point",
-      "coordinates":  [ -74.022806,40.74325 ]
+      "coordinates":  [ -74.02406,40.74197 ]
    },
    "properties": {
-   "Station Name":"Castle Point sfc",
+   "Station Name":"Castle Point Bottom",
    "HRECOS ID":"STCPBY1",
    "Site ID":"4044360740123"
    }
+ },
+ {
+  "type": "Feature",
+  "geometry": {
+     "type": "Point",
+     "coordinates":  [ -74.022817,40.74325 ]
+  },
+  "properties": {
+  "Station Name":"Castle Point Bouy",
+  "HRECOS ID":"STCPPB",
+  "Site ID":"4044360740123"
+  }
  },
  {
    "type": "Feature",
