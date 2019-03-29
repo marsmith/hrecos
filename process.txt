@@ -1,5 +1,5 @@
 Martyn Smith
-3/29/2019
+12/10/2018
 
 Process for importing legacy HRECOS CSV tables into mysql/mariadb database
 ------------------------------------------------------------------------------
@@ -9,21 +9,24 @@ Process for importing legacy HRECOS CSV tables into mysql/mariadb database
 
 2.  Create new table for each csv ('raw' and 'post') and load data
 
-    CREATE TABLE IF NOT EXISTS hrecos.raw (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, site_name VARCHAR(12), `parameter` VARCHAR(12), `datetime` DATETIME, value FLOAT, flag VARCHAR(12), comment VARCHAR(12), tz_code VARCHAR(12), agency_id VARCHAR(12));
+    CREATE TABLE IF NOT EXISTS hrecos.raw (site_name VARCHAR(12), `parameter` VARCHAR(12), `datetime` DATETIME, value FLOAT, flag VARCHAR(12), comment VARCHAR(12), tz_code VARCHAR(12), agency_id VARCHAR(12));
 
-3. Import Data
+3a. Import Data (command line)
+    [LOCAL]
     mysqlimport -h localhost -P 3306 -u hawdis -pabc123 --local --ignore-lines=1 --fields-terminated-by=',' --lines-terminated-by='\n' hrecos raw.csv -v
+    [REMOTE]
+    mysqlimport -h mysql.natweb.usgs.gov -P 3306 -u hrecos -prsT13zKDN9fp9EVI --local --ignore-lines=1 --fields-terminated-by=',' --lines-terminated-by='\n' hrecos raw.csv -v
+
+3b. Import Data (SQL query)
+    LOAD DATA LOCAL INFILE 'c:/NYBackup/GitHub/hrecos/data_import/raw.csv' INTO TABLE hrecos.raw FIELDS TERMINATED BY ',' IGNORE 1 ROWS;
+
+4.  Add auto increment primary key field
+    ALTER TABLE hrecos.raw ADD `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
 
 4. Create indexes
     CREATE INDEX raw_datetime_IDX ON hrecos.raw (`datetime`);
     CREATE INDEX raw_site_name_IDX ON hrecos.raw (`site_name`);
     CREATE INDEX raw_parameter_IDX ON hrecos.raw (`parameter`);
-
-Remote import (Final):
-1) CREATE TABLE IF NOT EXISTS hrecos.post (site_name TEXT, `parameter` TEXT, `datetime` DATETIME, value FLOAT, flag TEXT, comment TEXT, tz_code TEXT, agency_id TEXT);
-2) mysqlimport -h mysql.natweb.usgs.gov -P 3306 -u hrecos -prsT13zKDN9fp9EVI --local --ignore-lines=1 --fields-terminated-by=',' --lines-terminated-by='\n' hrecos 3) post.csv -v
-
- .
 
 Appendix
 ------------------------------
