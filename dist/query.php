@@ -21,9 +21,25 @@ $sql = "SELECT * FROM ". $dbname . "." . $tablename . " WHERE ";
 //get site list
 $haveSites = FALSE;
 if(isset($querySites) && !empty($querySites)){
-    $siteList = "'" . implode("','", explode(",", $querySites)) . "'";
+    $searchTerms = explode(',', $querySites);
+    $searchTermBits = array();
+
+    foreach ($searchTerms as $site) {
+        $site = trim($site);
+        if (!empty($site)) {
+            //get first 6 digits
+            $subsite = substr($site,0,6);
+            $searchTermBits[] = "`site_name` LIKE '$subsite%'";
+        }
+    }
+
     $haveSites = TRUE;
-    $sql .= "`site_name` IN (".$siteList.")";
+    $sql .= "(". implode(' OR ', $searchTermBits) . ")";
+
+    // $siteList = "'" . implode("','", explode(",", $querySites)) . "'";
+    // $haveSites = TRUE;
+    // $sql .= "`site_name` IN (".$siteList.")";
+
 }
 
 //get parameters
@@ -57,6 +73,8 @@ print json_encode(array(
     "declaredType" => "legacyDB",
     "queryInfo" => array(
         "criteria" => array(
+            "sql" => $sql,
+            "server" => $servername,
             "locationParam" => $querySites,
             "variableParam" => $queryParameters,
             "timeParam" => array(

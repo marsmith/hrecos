@@ -31,17 +31,17 @@ import moment from 'moment'
 import Highcharts from 'highcharts';
 import 'bootstrap-datepicker';
 import { map, control, tileLayer, featureGroup, geoJSON, Icon } from 'leaflet';
-import { basemapLayer, featureLayer } from 'esri-leaflet';
+import { basemapLayer } from 'esri-leaflet';
 
 //START user config variables
 var MapX = '-74.2'; //set initial map longitude
 var MapY = '41.7'; //set initial map latitude
 var MapZoom = 7; //set initial map zoom
-//var sitesURL = './sitesGeoJSON.json';
 //var sitesURL = './HRECOSsitesGeoJSON.json';
 var sitesURL = './HRECOSsitesGeoJSONsubset.json';
 var NWISivURL = 'https://nwis.waterservices.usgs.gov/nwis/iv/';
-var HRECOSurl = './query.php'; 
+var HRECOSurl;
+process.env.NODE_ENV === 'production' ? HRECOSurl = 'https://ny.water.usgs.gov/maps/hrecos/query.php' : HRECOSurl = 'http://localhost:8080/hrecos/query.php';
 var crossOverDate = '2019-03-06';
 //END user config variables 
 
@@ -455,9 +455,8 @@ function getData() {
             //if it doesnt exist add the new object
             if (!timeSeriesExists) {
 
-              
-
-              var siteInfo = lookupNWISsite(value.site_name);
+              //do search with first 6 digits only
+              var siteInfo = lookupNWISsite(value.site_name.substring(0,6));
               var parameterInfo = lookupParameter(value.parameter);
 
               console.log('this one doesnt exist, creating new time series:',value,siteInfo, parameterInfo) ;
@@ -661,8 +660,9 @@ function getData() {
         if (counter === requestDatas.length) {
           $('#loading').hide();
         }
+        console.error("Error:",error);
+        $('#graphStatus').append('<div class="alert alert-danger" role="alert" style="font-size:small;">There was an error while requesting data from the legacy database.</div>');
 
-        $('#graphStatus').append('<div class="alert alert-danger" role="alert" style="font-size:small;">There was an error while requesting data from the database: "' + error.responseText + '"</div>');
       }
     });
 
@@ -907,8 +907,17 @@ function openPopup(e) {
         popupContent += '<b>' + shortKey + ':</b>&nbsp;&nbsp;<a href="https://waterdata.usgs.gov/usa/nwis/uv?' + property + '" target="_blank">' + property + '</a></br>';
 
       }
+
       //otherwise add as normal
-      else popupContent += '<b>' + shortKey + ':</b>&nbsp;&nbsp;' + property + '</br>';
+      else {
+        if(e.layer.feature.properties[shortKey] instanceof Array) {
+          e.layer.feature.properties[shortKey].forEach(function(element) {
+            popupContent += '<b>' + shortKey + ':</b>&nbsp;&nbsp;' + element + '</br>';
+          });
+        }
+
+        else popupContent += '<b>' + shortKey + ':</b>&nbsp;&nbsp;' + property + '</br>';
+      }
     }
   });
 
