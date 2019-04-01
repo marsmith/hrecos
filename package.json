@@ -1,6 +1,6 @@
 {
   "name": "hrecos",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "HRECOS Mapper",
   "main": "webpack.config.js",
   "scripts": {

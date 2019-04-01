@@ -3,3 +3,4 @@ data_import
 .vscode
 *.csv
 *.zip
+/dist/config.php
