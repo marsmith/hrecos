@@ -59,31 +59,11 @@
                                         <!-- Only show this once at least one site is selected.  need to clone it for each additional site selected -->
                                         <div id="paramSelector" class="mt-4">
                                             <h5 class="card-title">Select Parameter(s)</h5>
-                                            <select class="appFilter" id="parameterSelect" data-selectname="Select Parameter" multiple></select>
+                                            <select class="appFilter paramSelect mb-4" id="metParameterSelect" data-selectname="Select Meteorologic Parameter" multiple></select>
+                                            <select class="appFilter paramSelect mt-4" id="hydParameterSelect" data-selectname="Select Hydrologic Parameter" multiple></select>
                                         </div>
 
-                                        <!-- <h5 class="card-title">Units</h5>
-                                        <select id="units" data-selectname="SelectUnit" data-minimum-results-for-search="Infinity">
-                                            <option value="English">English</option>
-                                            <option value="Metric">Metric</option>
-                                        </select>
-                                        <select id="type" data-selectname="SelectType" data-minimum-results-for-search="Infinity">
-                                            <option value="All Data">All Data</option>
-                                            <option value="Daily Avg">Daily Avg</option>
-                                        </select> -->
-
-                                        <!-- <div class="form-group">
-                                        <label >Begin voorverkoop periode</label>
-                                        <input type="date" name="bday" max="3000-12-31" 
-                                                min="1000-01-01" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                        <label >Einde voorverkoop periode</label>
-                                        <input type="date" name="bday" min="1000-01-01"
-                                                max="3000-12-31" class="form-control">
-                                        </div> -->
-
-                                        <h5 class="card-title mt-4">Select Time Period</h5>
+                                        <h5 class="card-title mt-3">Select Time Period</h5>
 
                                         <div class="mt-2">
                                             <div class="form-check">
@@ -267,17 +247,10 @@
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="aboutTabPane"><br>
 
-                                <img id="graphImage">
-                                <!-- <p>The U.S. Geological Survey (USGS) Aqquifer Test Locator is a web-base tool for the retrieval of aquifer-test information stored in the National Water Information System (NWIS).  The aquifer-test information includes well and aquifer completions, test types and analysis methods, and estimated hydraulic properties. The tool also provides links to associated interpretative publications and hydraulic-test data stored in NWIS or published as data releases.</p>
-
-                                <p>Since 1994, the USGS Water Mission Area has required internal review and archival of hydraulic-test data and analysis to support estimates of hydraulic properties used in its publications.  This tool provides a system to readily serve the estimated aquifer properties and associated test information in support of USGS groundwater investigations.</p> -->
-
-                                <!-- <h4>Suggested Citation</h4>
-
-                                <p>Smith, M.J., Go2 Mapper Web Application, <a href="https://doi.org/10.5066/F7R210PG" target="_blank">https://doi.org/10.5066/F7R210PG</a>.</p> -->
+                                <p>The Hudson River Environmental Conditions Observing System (<a href='https://hrecos.org' target='_blank'>HRECOS</a>) is a robust environmental monitoring network operated and managed by a consortium of governmental, academic, and private institutions with shared interest in high-frequency monitoring in the Hudson River watershed. HRECOS monitoring stations are geographically distributed along the Hudson and Mohawk Rivers, and are equipped with sensors that continuously record a suite of water quality and weather parameters every 15 minutes, with most stations operating year-round. Remote telemetry at each station transmits real-time data for the public to freely view and download using an easily-accessible interface at hrecos.org. HRECOS works to improve the capacity of regional river and estuary stakeholders to: understand the ecosystem and manage water resources, provide baseline monitoring data necessary for applied research and modeling, support the use of real-time data in educational settings, provide policy makers and emergency managers with data products to guide decision making, and provide information for safe and efficient commercial use and recreational activities</p>
 
                                 <p>Developed by <a href="https://www.usgs.gov/staff-profiles/martyn-smith">Martyn Smith</a> of the <a href="https://ny.water.usgs.gov">NY WSC</a>.<br><br>
-                                <!-- Source code available <a href="https://github.com/marsmith/go2mapper">here.</a></p> -->
+             
                                 <span id="appVersion"></span>
                             </div>
                             <div role="tabpanel" class="tab-pane" id="disclaimerTabPane"><br>

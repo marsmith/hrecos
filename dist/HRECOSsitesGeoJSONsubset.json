@@ -11,8 +11,12 @@
       "Station Name":"MOHAWK RIVER AT ILION NY",
       "HRECOS ID": "HRUTIC",
       "Site ID":"01342732",
-      "Partners": "New York State Department of Environmental Conservation",
-      "URL":"https://www.dec.ny.gov/"
+      "Partners": [
+        {
+          "name": "New York State Department of Environmental Conservation",
+          "url": "https://www.dec.ny.gov/"
+        }
+      ]
       }
     },
     {
@@ -25,37 +29,12 @@
       "Station Name":"MOHAWK RIVER AT LOCK 8 NEAR SCHENECTADY NY",
       "HRECOS ID":"HRLCK8",
       "Site ID":"01354330",
-      "Partners": "New York State Department of Environmental Conservation",
-      "URL":"https://www.dec.ny.gov/"
-      }
-    },
-    
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates":  [ -73.954956,41.3860719 ]
-      },
-      "properties": {
-      "Station Name":"HUDSON RIVER AT SOUTH DOCK AT WEST POINT NY",
-      "HRECOS ID":"HRWSTP",
-      "Site ID":"01374019",
-      "Partners": "Cary Institute of Ecosystem Studies",
-      "URL":"https://www.caryinstitute.org/"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-         "type": "Point",
-         "coordinates":  [ -73.7768751,42.4996069 ]
-      },
-      "properties": {
-      "Station Name":"HUDSON RIVER NEAR SCHODACK LANDING NY",
-      "HRECOS ID":"HRSCHD",
-      "Site ID":"0135980207",
-      "Partners": "New York State Department of Environmental Conservation",
-      "URL":"https://www.dec.ny.gov/"
+      "Partners": [
+        {
+          "name": "New York State Department of Environmental Conservation",
+          "url": "https://www.dec.ny.gov/"
+        }
+      ]
       }
     },
     {
@@ -68,8 +47,12 @@
       "Station Name":"MOHAWK RIVER AT REXFORD NY",
       "HRECOS ID":"HRREXB",
       "Site ID":"01355475",
-      "Partners": "New York State Department of Environmental Conservation",
-      "URL":"https://www.dec.ny.gov/"
+      "Partners": [
+        {
+          "name": "New York State Department of Environmental Conservation",
+          "url": "https://www.dec.ny.gov/"
+        }
+      ]
       }
     },
     {
@@ -82,8 +65,30 @@
       "Station Name":"HUDSON RIVER AT PORT OF ALBANY NY",
       "HRECOS ID":"HRALBP",
       "Site ID":"01359165",
-      "Partners": "New York State Department of Environmental Conservation",
-      "URL":"https://www.dec.ny.gov/"
+      "Partners": [
+        {
+          "name": "New York State Department of Environmental Conservation",
+          "url": "https://www.dec.ny.gov/"
+        }
+      ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+         "type": "Point",
+         "coordinates":  [ -73.7768751,42.4996069 ]
+      },
+      "properties": {
+      "Station Name":"HUDSON RIVER NEAR SCHODACK LANDING NY",
+      "HRECOS ID":"HRSCHD",
+      "Site ID":"0135980207",
+      "Partners": [
+        {
+          "name": "New York State Department of Environmental Conservation",
+          "url": "https://www.dec.ny.gov/"
+        }
+      ]
       }
     },
     {
@@ -96,8 +101,34 @@
       "Station Name":"HUDSON RIVER NEAR POUGHKEEPSIE NY",
       "HRECOS ID":"HRMARP",
       "Site ID":"01372043",
-      "Partners": ["Marist College", "Cary Institute of Ecosystem Studies"],
-      "URL": ["https://www.caryinstitute.org/", "https://www.marist.edu/"]
+      "Partners": [
+        {
+          "name": "Marist College",
+          "url": "https://www.marist.edu/"
+        },
+        {
+          "name": "Cary Institute of Ecosystem Studies",
+          "url": "https://www.caryinstitute.org/"
+        }
+      ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates":  [ -73.954956,41.3860719 ]
+      },
+      "properties": {
+      "Station Name":"HUDSON RIVER AT SOUTH DOCK AT WEST POINT NY",
+      "HRECOS ID":"HRWSTP",
+      "Site ID":"01374019",
+      "Partners": [
+        {
+          "name": "Cary Institute of Ecosystem Studies",
+          "url": "https://www.caryinstitute.org/"
+        }
+      ]
       }
     },
     {
@@ -110,8 +141,12 @@
       "Station Name":"HUDSON RIVER AT PIERMONT NY",
       "HRECOS ID":"HRPMNT",
       "Site ID":"01376269",
-      "Partners": "Lamont-Doherty Earth Observatory",
-      "URL":"https://www.ldeo.columbia.edu/"
+      "Partners": [
+        {
+          "name": "Lamont-Doherty Earth Observatory",
+          "url": "https://www.ldeo.columbia.edu/"
+        }
+      ]
       }
     },
     {
@@ -124,8 +159,12 @@
       "Station Name":"HUDSON RIVER AT WATER GRANT STREET AT YONKERS NY",
       "HRECOS ID":"HRBZAK",
       "Site ID":"01376307",
-      "Partners": "Sarah Lawrence College",
-      "URL":"https://www.centerfortheurbanriver.org/"
+      "Partners": [
+        {
+          "name": "Sarah Lawrence College",
+          "url": "https://www.centerfortheurbanriver.org/"
+        }
+      ]
       }
     },
     {
@@ -138,22 +177,30 @@
       "Station Name":"HUDSON RIVER AT PIER 84 AT NEW YORK NY",
       "HRECOS ID":"HRPR84",
       "Site ID":"01376515",
-      "Partners": "Hudson River Park Trust",
-      "URL":"https://hudsonriverpark.org/"
+      "Partners": [
+        {
+          "name": "Hudson River Park Trust",
+          "url": "https://hudsonriverpark.org/"
+        }
+      ]
       }
     },
     {
       "type": "Feature",
       "geometry": {
          "type": "Point",
-         "coordinates":  [ -74.0156651,40.7215509 ]
+         "coordinates":  [ -74.022817,40.74325 ]
       },
       "properties": {
-      "Station Name":"HUDSON RIVER AT PIER 26 AT NEW YORK NY",
-      "HRECOS ID":"HRPR26",
-      "Site ID":"01376520",
-      "Partners": "Hudson River Park Trust",
-      "URL":"https://hudsonriverpark.org/"
+      "Station Name":"Castle Point Bouy",
+      "HRECOS ID":"STCPPB",
+      "Site ID":"4044360740123",
+      "Partners": [
+        {
+          "name": "Stevens Institute",
+          "url": "https://www.stevens.edu/"
+        }
+      ]
       }
     },
     {
@@ -166,24 +213,33 @@
       "Station Name":"Castle Point Bottom",
       "HRECOS ID":"STCPBY",
       "Site ID":"4044360740123",
-      "Partners": "Sarah Lawrence College",
-      "URL":"https://www.stevens.edu/"
+      "Partners": [
+        {
+          "name": "Stevens Institute",
+          "url": "https://www.stevens.edu/"
+        }
+      ]
       }
     },
     {
-     "type": "Feature",
-     "geometry": {
-        "type": "Point",
-        "coordinates":  [ -74.022817,40.74325 ]
-     },
-     "properties": {
-     "Station Name":"Castle Point Bouy",
-     "HRECOS ID":"STCPPB",
-     "Site ID":"4044360740123",
-     "Partners": "Sarah Lawrence College",
-     "URL":"https://www.stevens.edu/"
-     }
+      "type": "Feature",
+      "geometry": {
+         "type": "Point",
+         "coordinates":  [ -74.0156651,40.7215509 ]
+      },
+      "properties": {
+      "Station Name":"HUDSON RIVER AT PIER 26 AT NEW YORK NY",
+      "HRECOS ID":"HRPR26",
+      "Site ID":"01376520",
+      "Partners": [
+        {
+          "name": "Hudson River Park Trust",
+          "url": "https://hudsonriverpark.org/"
+        }
+      ]
+      }
     },
+
     {
       "type": "Feature",
       "geometry": {
@@ -194,8 +250,12 @@
       "Station Name":"Passaic River at PVSC at Newark, NJ",
       "HRECOS ID":"HRPVSC",
       "Site ID":"01392650",
-      "Partners": "Passaic Valley Sewerage Commission",
-      "URL":"https://www.nj.gov/pvsc/"
+      "Partners": [
+        {
+          "name": "Passaic Valley Sewerage Commission",
+          "url": "https://www.nj.gov/pvsc/"
+        }
+      ]
       }
     }
 

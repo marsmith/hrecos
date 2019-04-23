@@ -192,6 +192,10 @@ color:white;
   ===========================
 */
 
+#paramSelector > span {
+  margin-bottom:6px;
+}
+
 select {
   width:100%;
 }
@@ -207,10 +211,6 @@ select {
 
 #optionsPanel .card {
   background-color: #ECEEF3;
-}
-
-.select2-search__field {
-  width: auto !important; 
 }
 
 .select2-selection__choice {

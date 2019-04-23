@@ -54,7 +54,7 @@ if(isset($queryParameters) && !empty($queryParameters)){
 //get dates
 if(isset($queryStartDT) && !empty($queryStartDT) && isset($queryEndDT) && !empty($queryEndDT)){
     if ($haveParameters || $haveSites) { $sql .= " AND ";};
-    $sql .= "`datetime` >= '".$queryStartDT."' AND `datetime` <= '".$queryEndDT."'";
+    $sql .= "`date_time` >= '".$queryStartDT."' AND `date_time` <= '".$queryEndDT."'";
 }
 
 //limit records for testing

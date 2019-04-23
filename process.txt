@@ -9,7 +9,7 @@ Process for importing legacy HRECOS CSV tables into mysql/mariadb database
 
 2.  Create new table for each csv ('raw' and 'post') and load data
 
-    CREATE TABLE IF NOT EXISTS hrecos.raw (site_name VARCHAR(12), `parameter` VARCHAR(12), `datetime` DATETIME, value FLOAT, flag VARCHAR(12), comment VARCHAR(12), tz_code VARCHAR(12), agency_id VARCHAR(12));
+    CREATE TABLE IF NOT EXISTS hrecos.raw (site_name VARCHAR(12), `parameter` VARCHAR(12), `date_time` DATETIME, value FLOAT, flag VARCHAR(12), comment VARCHAR(12), tz_code VARCHAR(12), agency_id VARCHAR(12));
 
 3a. Import Data (command line)
     [LOCAL]
@@ -24,7 +24,7 @@ Process for importing legacy HRECOS CSV tables into mysql/mariadb database
     ALTER TABLE hrecos.raw ADD `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
 
 4. Create indexes
-    CREATE INDEX raw_datetime_IDX ON hrecos.raw (`datetime`);
+    CREATE INDEX raw_date_time_IDX ON hrecos.raw (`date_time`);
     CREATE INDEX raw_site_name_IDX ON hrecos.raw (`site_name`);
     CREATE INDEX raw_parameter_IDX ON hrecos.raw (`parameter`);
 
