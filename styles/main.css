@@ -60,20 +60,20 @@
 }
 
 .top-menu-brand {
-  padding: 18px 20px 15px;
-}
-
-.top-menu-brand{
-  padding-top: 18px;
+  padding: 14px 14px 10px;
 }
 
 .top-menu-brand > img {
-height: 50px;
+  height: 40px;
+}
+
+.top-menu-brand.dec-logo > img {
+  filter: invert(100%);
 }
 
 .app-name{
   position: relative;
-  top:-2px;
+  top:2px;
   font-weight:300;
 }
 
@@ -401,9 +401,9 @@ border: 0;
     left: 0;
   }
 
-  .top-menu-brand > img {
-    height: 40px;
-    }
+  .top-menu-brand {
+    display:none;
+  }
 
   body {
     padding-left:0px;
