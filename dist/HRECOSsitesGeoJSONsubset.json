@@ -99,7 +99,7 @@
       },
       "properties": {
       "Station Name":"Tivoli North Bay (NERRS)",
-      "HRECOS ID":"HUDTNW",
+      "HRECOS ID":"HUDTNWQ",
       "Site ID":"NERRS_HUDTNWQ",
       "Partners": [
         {
@@ -117,7 +117,7 @@
       },
       "properties": {
       "Station Name":"Tivoli South Bay (NERRS)",
-      "HRECOS ID":"HUDTSW",
+      "HRECOS ID":"HUDTSWQ",
       "Site ID":"NERRS_HUDTSWQ",
       "Partners": [
         {
@@ -135,8 +135,44 @@
       },
       "properties": {
       "Station Name":"Tivoli Bays weather (NERRS)",
-      "HRECOS ID":"HUDFSM",
+      "HRECOS ID":"HUDFSMET",
       "Site ID":"NERRS_HUDFSMET",
+      "Partners": [
+        {
+          "name": "NOAA's National Estuarine Research Reserve System (NERRS)",
+          "url": "http://cdmo.baruch.sc.edu/"
+        }
+      ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+         "type": "Point",
+         "coordinates":  [ -73.94194,41.83167 ]
+      },
+      "properties": {
+      "Station Name":"Norrie Point Water Quality (NERRS)",
+      "HRECOS ID":"HUDNPWQ",
+      "Site ID":"NERRS_HUDNPWQ",
+      "Partners": [
+        {
+          "name": "NOAA's National Estuarine Research Reserve System (NERRS)",
+          "url": "http://cdmo.baruch.sc.edu/"
+        }
+      ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+         "type": "Point",
+         "coordinates":  [ -73.94222,41.83139 ]
+      },
+      "properties": {
+      "Station Name":"Norrie Point Meteorological (NERRS)",
+      "HRECOS ID":"HUDNPMET",
+      "Site ID":"NERRS_HUDNPMET",
       "Partners": [
         {
           "name": "NOAA's National Estuarine Research Reserve System (NERRS)",

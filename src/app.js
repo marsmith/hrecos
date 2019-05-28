@@ -13,13 +13,14 @@
 // 07.25.2018 mjs - Major overhaul to get NWIS data, compare multiple sites and parameters
 
 //CSS imports
+
 import 'bootstrap/dist/css/bootstrap.css';
-// import 'font-awesome/css/font-awesome.css';
+import 'marker-creator/public/css/markers.css';
 import 'leaflet/dist/leaflet.css';
-import 'marker-creator/stylesheets/css/markers.css';
 import 'select2/dist/css/select2.css';
 import 'bootstrap-datepicker/dist/css/bootstrap-datepicker.css';
 import './styles/main.css';
+
 
 //ES6 imports
 import 'bootstrap/js/dist/util';
@@ -57,12 +58,12 @@ dom.watch();
 
 
 //START user config variables
-var MapX = '-74.2'; //set initial map longitude
+var MapX = '-73.6'; //set initial map longitude
 var MapY = '41.7'; //set initial map latitude
-var MapZoom = 7; //set initial map zoom
+var MapZoom = 8; //set initial map zoom
 //var sitesURL = './HRECOSsitesGeoJSON.json';
 var sitesURL = './HRECOSsitesGeoJSONsubset.json';
-var NWISivURL = 'https://nwis.waterservices.usgs.gov/nwis/iv/';
+var NWISivURL = 'https://nwis.waterservices.usgs.gov/nwis/iv/?';
 var HRECOSurl;
 process.env.NODE_ENV === 'production' ? HRECOSurl = 'https://ny.water.usgs.gov/maps/hrecos/query.php' : HRECOSurl = 'http://localhost:8080/hrecos/query.php';
 //check if staging
@@ -72,10 +73,11 @@ var crossOverDate = '2019-03-06';
 
 //START global variables
 var theMap;
-var chart;
 var featureCollection;
 var layer, sitesLayer, layerLabels;
 var seriesData;
+var chart;
+var compareYears;
 var requests = [];
 
 var parameterList = [
@@ -111,6 +113,7 @@ var parameterList = [
   {pcode:'82127', type: 'Meteorologic', HRECOScode: 'WSPD', NERRScode: 'WSPD', desc:'Wind speed, knots', unit:'knots', conversion: null},
 
   {pcode:'90860', type: 'Hydrologic', HRECOScode: 'SALT', NERRScode: 'SAL', desc:'Salinity, water, unfiltered, practical salinity units at 25 degrees Celsius', unit:'PSS', conversion: null},
+  {pcode:'00480', type: 'Hydrologic', HRECOScode: 'SALT', NERRScode: 'SAL', desc:'Salinity, water, unfiltered, parts per thousand', unit:'PPT', conversion: null},
 
   {pcode:'99989', type: 'Meteorologic', HRECOScode: 'PAR', NERRScode: 'TotPAR', desc:'Photosynthetically active radiation (average flux density on a horizontal surface during measurement interval), micromoles of photons per square meter per second', unit:'mmol/m2', conversion: null},
 
@@ -316,7 +319,7 @@ function getData() {
 
   //set request infos
   var newRequestData;
-  var compareYears = false;
+  compareYears = false;
   var inputRequests = [];
   var requestDatas = [];
   requests = [];
@@ -387,10 +390,10 @@ function getData() {
   }
 
   //main check if query is >90 days
-  // if (moment(requestData.endDT).diff(moment(requestData.startDT), 'days') > 90) {
-  //   alert('Requested data is greater than 90 days');
-  //   return;
-  // }
+  if (moment(requestData.endDT).diff(moment(requestData.startDT), 'years') > 2) {
+    alert('The maximum query range is 2 years');
+    return;
+  }
 
   //validate station and parameter selections
   if (siteData.length === 0 || parameterCodesList.length === 0) {
@@ -435,7 +438,7 @@ function getData() {
 
     if (siteIDlist.length > 0) {
       var siteIDs = siteIDlist.join(',');
-      requestData.sites = siteIDs;
+      inputRequest.sites = siteIDs;
 
       //  1.  if both dates before crossover date then purely legacy query
       if (moment(inputRequest.startDT).isSameOrBefore(crossOverDate) && moment(inputRequest.endDT).isSameOrBefore(crossOverDate)) {
@@ -534,7 +537,12 @@ function getData() {
           //Add NERRS banner
           if (data.queryInfo.criteria.sql.indexOf('.NERRS') !== -1) {
             NERRSdata = true;
-            $('#graphStatus').append("<div class='alert alert-primary' role='alert' style='font-size:small;'>NERRS Site data is courtesy of NOAA's <a href='http://cdmo.baruch.sc.edu/' target='_blank'>National Estuarine Research Reserve System </a></div>"); 
+            $('#graphStatus').append("<div class='alert alert-primary' role='alert' style='font-size:small;'>NERRS Site data is courtesy of NOAA's <a href='http://cdmo.baruch.sc.edu/' target='_blank'>National Estuarine Research Reserve System </a>.  All data is provisional.  Please visit the NERRS website to download data.</div>"); 
+
+            //sort NERRS data.  For some reason it doesn't come back sorted
+            data.values.sort((a,b) => (a.date_time > b.date_time) ? 1 : ((b.date_time > a.date_time) ? -1 : 0));
+
+            
           }
 
           //create shell data object
@@ -563,7 +571,14 @@ function getData() {
             if (!timeSeriesExists) {
 
               //do search with first 6 digits only
-              var siteInfo = lookupNWISsite(value.site_name.substring(0,6));
+              var siteNm = value.site_name.substring(0,6);
+
+              if (data.queryInfo.criteria.sql.indexOf('.NERRS') !== -1) {
+                var siteNm = value.site_name;
+              }
+
+              var siteInfo = lookupNWISsite(siteNm);
+              
               var parameterInfo;
 
               //NERRS parameter lookup
@@ -667,7 +682,7 @@ function getData() {
               $('#loading').hide();
             }
 
-            $('#graphStatus').append('<div class="alert alert-warning" role="alert" style="font-size:small;">Found HRECOS site(s): ' + badges.join('  ') + ' but no data in the legacy HRECOS DB was found for paremeters: [' +  requestData.parameterCd + ']</div>');
+            $('#graphStatus').append('<div class="alert alert-warning" role="alert" style="font-size:small;">Found HRECOS site(s): ' + badges.join('  ') + ' but no data in the legacy HRECOS DB was found for parameters: [' +  requestData.parameterCd + ']</div>');
 
             //$('#graphStatus').append('<div id="hrecosAlert" class="alert alert-warning" role="alert" style="font-size:small;">Found HRECOS site(s) [' + siteIDs + '] but no data in the legacy HRECOS DB was found [' +  requestData.parameterCd + ']</div>');
           }
@@ -679,7 +694,7 @@ function getData() {
               $('#loading').hide();
             }
 
-            $('#graphStatus').append('<div class="alert alert-warning" role="alert" style="font-size:small;">Found NWIS site(s): ' + badges.join('  ') + ' but no data was found in USGS NWIS waterservices for paremeters: [' +  requestData.parameterCd + ']</div>');
+            $('#graphStatus').append('<div class="alert alert-warning" role="alert" style="font-size:small;">Found NWIS site(s): ' + badges.join('  ') + ' but no data was found in USGS NWIS waterservices for parameters: [' +  requestData.parameterCd + ']</div>');
 
             //$('#graphStatus').append('<div id="nwisAlert" class="alert alert-warning" role="alert" style="font-size:small;">Found NWIS site(s) [' + siteIDs + '] but no data was found in USGS NWIS waterservices for [' +  requestData.parameterCd + ']</div>');
           }
@@ -788,7 +803,7 @@ function getData() {
             showGraph(startTime,seriesData); 
 
             //enable download button
-            $('#downloadData').prop('disabled', false);
+            if (!NERRSdata) $('#downloadData').prop('disabled', false);
 
             if (qualifierFound) $('#graphStatus').append('<div class="alert alert-warning" role="alert" style="font-size:small;">Qualifier flags were found for the input request, some data is missing.</div>');
 
@@ -922,8 +937,10 @@ function showGraph(startTime,seriesData) {
 			type: "datetime",
 			labels: {
 				formatter: function () {
-					return Highcharts.dateFormat('%m/%d', this.value);
-				},
+          if (compareYears) return Highcharts.dateFormat('%m/%d', this.value);
+          else return Highcharts.dateFormat('%m/%d/%Y', this.value);
+        },
+        style: {"fontSize": "9px"},
 				//rotation: 90,
 				align: 'center',
 				tickInterval: 172800 * 1000
@@ -1106,7 +1123,7 @@ function loadSites() {
             //make sure we have something
             if (property.length > 0) {
 
-              if(shortKey === 'Site ID') {
+              if(shortKey === 'Site ID' && feature.properties["Station Name"].indexOf('NERRS') === -1) {
                 
                 popupContent += '<b>' + shortKey + ':</b>&nbsp;&nbsp;<a href="https://waterdata.usgs.gov/usa/nwis/uv?' + property + '" target="_blank">' + property + '</a></br>';
 

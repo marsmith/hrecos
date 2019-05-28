@@ -34,8 +34,14 @@ if(isset($querySites) && !empty($querySites)){
     foreach ($searchTerms as $site) {
         $site = trim($site);
         if (!empty($site)) {
-            //get first 6 digits
-            $subsite = substr($site,0,6);
+            if($querySource == "NERRS") {
+                $subsite = $site;
+            }
+            else {
+                //get first 6 digits
+                $subsite = substr($site,0,6);
+            }
+
             $searchTermBits[] = "`site_name` LIKE '$subsite%'";
         }
     }

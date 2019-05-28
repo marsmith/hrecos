@@ -4,8 +4,6 @@ var pkg = require('./package.json');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 var CopyPlugin = require('copy-webpack-plugin');
-var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-var BrotliPlugin = require('brotli-webpack-plugin');
 
 var PATHS = {
     dist: path.join(__dirname, 'dist/'),
@@ -59,12 +57,6 @@ module.exports = {
             /moment[/\\]locale$/,
             /en/
         ),
-        new BrotliPlugin({
-			asset: '[path].br[query]',
-			test: /\.(js|css|html|svg)$/,
-			threshold: 10240,
-			minRatio: 0.8
-		})
         //new BundleAnalyzerPlugin()
     ],
     devServer: {

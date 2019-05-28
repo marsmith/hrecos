@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta name="author" content="Martyn Smith - USGS NY WSC">
-	<link rel="copyright" href="license.txt">
+    <link rel="copyright" href="license.txt">
     <title>HRECOS</title>
     <meta charset="utf-8">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
 
-  </head> 
-  <body>
-    
+<body>
+
     <div id="top-menu">
         <div id="mobile-main-menu">
-            <span class="fa fa-bars" ></span>
+            <span class="fa fa-bars"></span>
         </div>
         <div class="title">
-            <a class='top-menu-brand hidden-xs' href="https://www.usgs.gov"   target="_blank"><img src="images/logo.png"></a>
-            <a class='top-menu-brand hidden-xs' href="https://www.hrecos.org" target="_blank"><img src="images/hrecos.png"></a>
-            <a class='top-menu-brand dec-logo hidden-xs' href="https://www.dec.ny.gov/about/661.htm" target="_blank"><img src="images/nydec.png"></a>
-            <span class="app-name">HRECOS</span><span class="app-name-mobile">HRECOS</span> 
+            <a class='top-menu-brand hidden-xs' href="https://www.usgs.gov" target="_blank"><img
+                    src="images/logo.png"></a>
+            <a class='top-menu-brand hidden-xs' href="https://www.hrecos.org" target="_blank"><img
+                    src="images/hrecos.png"></a>
+            <a class='top-menu-brand dec-logo hidden-xs' href="https://www.dec.ny.gov/about/661.htm"
+                target="_blank"><img src="images/nydec.png"></a>
+            <span class="app-name">HRECOS</span><span class="app-name-mobile">HRECOS</span>
         </div>
 
         <button id="aboutButton" class="btn btn-default top-menu-btn">
@@ -29,14 +33,15 @@
 
     <div id="main-menu">
         <div class="main-menu-container scrollable">
-            <div class="menu-content"> 
+            <div class="menu-content">
                 <div class="scrollable-content">
 
                     <div class="accordion" id="accordion">
                         <div class="card mb-0 sidebar-panel">
 
-                            <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#explanationPanel">
-                                <a class="card-title" >
+                            <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion"
+                                aria-expanded="true" href="#explanationPanel">
+                                <a class="card-title">
                                     Explanation
                                 </a>
                             </div>
@@ -44,11 +49,12 @@
                                 <div class="card">
                                     <div id="legend" class="card-body">
                                     </div>
-                                </div>       
+                                </div>
                             </div>
 
-                            <div class="card-header" data-toggle="collapse" data-parent="#accordion" href="#optionsPanel">
-                                <a class="card-title" >
+                            <div class="card-header" data-toggle="collapse" data-parent="#accordion"
+                                href="#optionsPanel">
+                                <a class="card-title">
                                     Analysis
                                 </a>
                             </div>
@@ -57,12 +63,15 @@
                                     <div id="analysis" class="card-body">
 
                                         <h5 class="card-title">Select Station(s)</h5>
-                                        <select class="appFilter" id="stationSelect" data-selectname="Select Station" multiple></select>
+                                        <select class="appFilter" id="stationSelect" data-selectname="Select Station"
+                                            multiple></select>
 
                                         <div id="paramSelector" class="mt-4">
                                             <h5 class="card-title">Select Parameter(s)</h5>
-                                            <select class="appFilter paramSelect mb-4" id="metParameterSelect" data-selectname="Select Meteorologic Parameter" multiple></select>
-                                            <select class="appFilter paramSelect mt-4" id="hydParameterSelect" data-selectname="Select Hydrologic Parameter" multiple></select>
+                                            <select class="appFilter paramSelect mb-4" id="metParameterSelect"
+                                                data-selectname="Select Meteorologic Parameter" multiple></select>
+                                            <select class="appFilter paramSelect mt-4" id="hydParameterSelect"
+                                                data-selectname="Select Hydrologic Parameter" multiple></select>
                                         </div>
 
                                         <h5 class="card-title mt-3">Select Time Period</h5>
@@ -70,19 +79,21 @@
                                         <div class="mt-2">
                                             <div class="form-check">
                                                 <label class="form-check-label">
-                                                    <input class="form-check-input" type="radio" name="timeSelect" id="timePeriodRadio" value="period" checked>
+                                                    <input class="form-check-input" type="radio" name="timeSelect"
+                                                        id="timePeriodRadio" value="period" checked>
                                                     Choose Time Period
                                                 </label>
                                             </div>
-                                                
-                                            <select class="mt-8" id="timePeriodSelect" data-selectname="SelectDatePeriod">
+
+                                            <select class="mt-8" id="timePeriodSelect"
+                                                data-selectname="SelectDatePeriod">
                                                 <option value="P1D">Past 1 Day</option>
                                                 <option value="P7D" selected="selected">Past 7 Days</option>
                                                 <option value="P30D">Past 30 Days</option>
                                                 <option value="P2M">Past 2 Months</option>
                                                 <option value="P6M">Past 6 Months</option>
                                             </select>
-    
+
                                         </div>
 
                                         <div class="mt-2">OR</div>
@@ -90,51 +101,72 @@
                                         <div class="mt-2">
                                             <div class="form-check">
                                                 <label class="form-check-label">
-                                                    <input class="form-check-input" type="radio" name="timeSelect" id="specificRadio" value="range" checked>
+                                                    <input class="form-check-input" type="radio" name="timeSelect"
+                                                        id="specificRadio" value="range" checked>
                                                     Choose Specific Date Range
                                                 </label>
                                             </div>
-                                                
-    
+
+
                                             <input id="startDate" type="text" value="2018-04-16" class="datepicker">
                                             <span>Start Date</span>
-    
-                 
+
+
                                             <input id="endDate" type="text" value="2018-04-19" class="mt-1 datepicker">
                                             <span>End Date</span>
-                
+
                                         </div>
 
                                         <div class="form-check mt-2">
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
                                             <label class="form-check-label">
                                                 <input id="compareYears" class="form-check-input" type="checkbox">
                                                 Compare past year's data
                                             </label>
-                                        </div>           
-                       
+                                        </div>
+
                                     </div>
                                     <div class="card-footer text-muted">
                                         <button id="showGraph" type="button" class="btn btn-success">Show Graph</button>
                                     </div>
-            
-                                </div> 
+
+                                </div>
                             </div>
-   
-                            <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" href="#basemapsPanel">
-                                <a class="card-title" >
+
+                            <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion"
+                                href="#basemapsPanel">
+                                <a class="card-title">
                                     Basemaps
                                 </a>
                             </div>
                             <div id="basemapsPanel" class="card-body collapse" data-parent="#accordion">
-      
-                                    <button id="btnStreets" class="btn btn-default slick-btn basemapBtn equalize"><img class="basemapThumb" alt="" src="images/streets.jpg"><br class="basemapThumb">Streets</button>
-                                    <button id="btnSatellite" class="btn btn-default slick-btn basemapBtn equalize" ><img class="basemapThumb" alt="" src="images/imagery.jpg"><br class="basemapThumb">Imagery</button>
-                                    <button id="btnImageryClarity" class="btn btn-default slick-btn basemapBtn equalize" ><img class="basemapThumb" alt="" src="images/imagery_clarity.jpg"><br class="basemapThumb">Imagery Clarity</button>
-                                    <button id="btnTopo" class="btn btn-default slick-btn basemapBtn equalize"><img class="basemapThumb" alt="" src="images/topo.jpg"><br class="basemapThumb">Topo</button>
-                                    <button id="btnTerrain" class="btn btn-default slick-btn basemapBtn equalize"><img class="basemapThumb" alt="" src="images/terrain.jpg"><br class="basemapThumb">Terrain</button>
-                                    <button id="btnGray" class="btn btn-default slick-btn basemapBtn equalize slick-btn-selection" ><img class="basemapThumb" alt="" src="images/gray.jpg"><br class="basemapThumb">Gray</button>
-                                    <button id="btnDarkGray" class="btn btn-default slick-btn basemapBtn equalize" ><img class="basemapThumb" alt="" src="images/darkgray.jpg"><br class="basemapThumb">DarkGray</button>
-                                    <button id="btnNatGeo" class="btn btn-default slick-btn basemapBtn equalize"><img class="basemapThumb" alt="" src="images/natgeo.jpg"><br class="basemapThumb">NatGeo</button>
+
+                                <button id="btnStreets" class="btn btn-default slick-btn basemapBtn equalize"><img
+                                        class="basemapThumb" alt="" src="images/streets.jpg"><br
+                                        class="basemapThumb">Streets</button>
+                                <button id="btnSatellite" class="btn btn-default slick-btn basemapBtn equalize"><img
+                                        class="basemapThumb" alt="" src="images/imagery.jpg"><br
+                                        class="basemapThumb">Imagery</button>
+                                <button id="btnImageryClarity"
+                                    class="btn btn-default slick-btn basemapBtn equalize"><img class="basemapThumb"
+                                        alt="" src="images/imagery_clarity.jpg"><br class="basemapThumb">Imagery
+                                    Clarity</button>
+                                <button id="btnTopo" class="btn btn-default slick-btn basemapBtn equalize"><img
+                                        class="basemapThumb" alt="" src="images/topo.jpg"><br
+                                        class="basemapThumb">Topo</button>
+                                <button id="btnTerrain" class="btn btn-default slick-btn basemapBtn equalize"><img
+                                        class="basemapThumb" alt="" src="images/terrain.jpg"><br
+                                        class="basemapThumb">Terrain</button>
+                                <button id="btnGray"
+                                    class="btn btn-default slick-btn basemapBtn equalize slick-btn-selection"><img
+                                        class="basemapThumb" alt="" src="images/gray.jpg"><br
+                                        class="basemapThumb">Gray</button>
+                                <button id="btnDarkGray" class="btn btn-default slick-btn basemapBtn equalize"><img
+                                        class="basemapThumb" alt="" src="images/darkgray.jpg"><br
+                                        class="basemapThumb">DarkGray</button>
+                                <button id="btnNatGeo" class="btn btn-default slick-btn basemapBtn equalize"><img
+                                        class="basemapThumb" alt="" src="images/natgeo.jpg"><br
+                                        class="basemapThumb">NatGeo</button>
 
                             </div>
                         </div>
@@ -150,9 +182,9 @@
                             <a href="https://www2.usgs.gov/laws/accessibility.html">Accessibility</a>
                             <a href="https://www.usgs.gov/sitemap.html">Site Map</a>
                             <a href="https://answers.usgs.gov/">Contact USGS</a>
-                            <!--/ footer nav links -->      
+                            <!--/ footer nav links -->
                         </div>
-    
+
                         <div class="footer-links">
                             <!-- footer nav links -->
                             <a href="https://www.doi.gov/">U.S. Department of the Interior</a>
@@ -161,9 +193,9 @@
                             <a href="https://www.whitehouse.gov/omb/management/egov/">E-gov</a>
                             <a href="https://www.doi.gov/pmb/eeo/no-fear-act">No Fear Act</a>
                             <a href="https://www2.usgs.gov/foia">FOIA</a>
-                            <!--/ footer nav links -->      
+                            <!--/ footer nav links -->
                         </div>
-    
+
                         <!-- .footer-social-links -->
                         <div class="footer-icons">
                             <a href="https://twitter.com/usgs" target="_blank">
@@ -193,7 +225,7 @@
             </div>
         </div>
     </div>
-    <div id="graphModal" class="modal fade"  tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div id="graphModal" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -204,7 +236,7 @@
                 </div>
                 <div id="graphModalBody" class="modal-body">
 
-                    
+
                     <div id="graphContainer"></div>
                     <div id="loading">
                         <div class="load-text">
@@ -216,76 +248,105 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="downloadData" class="btn btn-success" disabled>Download Data</button>
-                        
+
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div><!-- /.modal-content -->
         </div> <!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    
-    <div id="aboutModal" class="modal fade"  tabindex="-1" role="dialog" >
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">HRECOS</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div id="aboutModalBody" class="modal-body">
-                        <ul class="nav nav-tabs" id="aboutModalTabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="aboutTab" href="#aboutTabPane" data-toggle="tab" role="tab"><i class="fa fa-question-circle"></i>&nbsp;About the application</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="disclaimerTab" href="#disclaimerTabPane" data-toggle="tab" role="tab"><i class="fa fa-exclamation-circle"></i>&nbsp;Disclaimer</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane active" id="aboutTabPane"><br>
 
-                                <p>The Hudson River Environmental Conditions Observing System (<a href='https://hrecos.org' target='_blank'>HRECOS</a>) is a robust environmental monitoring network operated and managed by a consortium of governmental, academic, and private institutions with shared interest in high-frequency monitoring within the Hudson River watershed. HRECOS monitoring stations are geographically distributed along the Hudson and Mohawk rivers, and are equipped with sensors that continuously record a suite of water quality and weather parameters every 15 minutes, with most stations operating year-round. Remote telemetry at each station transmits real-time data that is stored in remote databases and made easily accessible with HRECOS mapper application (https://ny.water.usgs.gov/maps/hrecos/). HRECOS works to improve the capacity of regional river and estuary stakeholders to: understand the ecosystem and manage water resources, provide baseline monitoring data necessary for applied research and modeling, support the use of real-time data in educational settings, provide policy makers and emergency managers with data products to guide decision making, and provide information for safe and efficient commercial use and recreational activities.</p>
+    <div id="aboutModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">HRECOS</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="aboutModalBody" class="modal-body">
+                    <ul class="nav nav-tabs" id="aboutModalTabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="aboutTab" href="#aboutTabPane" data-toggle="tab"
+                                role="tab"><i class="fa fa-question-circle"></i>&nbsp;About the application</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="disclaimerTab" href="#disclaimerTabPane" data-toggle="tab"
+                                role="tab"><i class="fa fa-exclamation-circle"></i>&nbsp;Disclaimer</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="aboutTabPane"><br>
 
-                                <p>For more information please visit <a href='https://hrecos.org' target='_blank'>hrecos.org</a>.</p>
+                            <p>The Hudson River Environmental Conditions Observing System (<a href='https://hrecos.org'
+                                    target='_blank'>HRECOS</a>) is a robust environmental monitoring network operated
+                                and managed by a consortium of governmental, academic, and private institutions with
+                                shared interest in high-frequency monitoring within the Hudson River watershed. HRECOS
+                                monitoring stations are geographically distributed along the Hudson and Mohawk rivers,
+                                and are equipped with sensors that continuously record a suite of water quality and
+                                weather parameters every 15 minutes, with most stations operating year-round. Remote
+                                telemetry at each station transmits real-time data that is stored in remote databases
+                                and made easily accessible with HRECOS mapper application
+                                (https://ny.water.usgs.gov/maps/hrecos/). HRECOS works to improve the capacity of
+                                regional river and estuary stakeholders to: understand the ecosystem and manage water
+                                resources, provide baseline monitoring data necessary for applied research and modeling,
+                                support the use of real-time data in educational settings, provide policy makers and
+                                emergency managers with data products to guide decision making, and provide information
+                                for safe and efficient commercial use and recreational activities.</p>
 
-                                <p>HRECOS Partners:</p>
-                                New York State Department of Environmental Conservation (NYSDEC)<br>
-                                United States Geologic Survey (USGS)<br>
-                                Cary Institute of Ecosystem Studies<br>
-                                National Estuarine Research Reserve System (NERRS)<br>
-                                Lamont-Doherty Earth Observatory, Columbia University<br>
-                                Marist College<br>
-                                New York-New Jersey Harbor and Estuary Program<br>
-                                Sarah Lawrence College Center for the Urban River at Beczak<br>
-                                Hudson River Park Trust<br>
-                                Hudson River Foundation for Science and Environmental Research<br>
-                                Hudson River Sloop Clearwater<br>
-                                Stevens Institute of Technology<br>
+                            <p>For more information please visit <a href='https://hrecos.org'
+                                    target='_blank'>hrecos.org</a>.</p>
 
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="disclaimerTabPane"><br>
-                                <h4>USGS Software User Rights Notice</h4>
-                                <p>Software and related material (data and (or) documentation), contained in or furnished in connection with a software distribution, are made available by the U.S. Geological Survey (USGS) to be used in the public interest and in the advancement of science, subject to the following restrictions and understandings.</p>
-                                  
-                                <p>Because the software and related material are free and provided "as is," the authors, the USGS, and the United States Government have made no warranty, express or implied, as to accuracy or completeness and are not obligated to provide the user with any support, consulting, training or assistance of any kind with regard to the use, operation, and performance of this software nor to provide the user with any updates, revisions, new versions or "bug fixes".</p>
-                                  
-                                <p>The user assumes all risk for any damages whatsoever resulting from loss of use, data, or profits arising in connection with the access, use, quality, or performance of this software.</p>	
+                            <p>HRECOS Partners:</p>
+                            New York State Department of Environmental Conservation (NYSDEC)<br>
+                            United States Geologic Survey (USGS)<br>
+                            Cary Institute of Ecosystem Studies<br>
+                            National Estuarine Research Reserve System (NERRS)<br>
+                            Lamont-Doherty Earth Observatory, Columbia University<br>
+                            Marist College<br>
+                            New York-New Jersey Harbor and Estuary Program<br>
+                            Sarah Lawrence College Center for the Urban River at Beczak<br>
+                            Hudson River Park Trust<br>
+                            Hudson River Foundation for Science and Environmental Research<br>
+                            Hudson River Sloop Clearwater<br>
+                            Stevens Institute of Technology<br>
 
-                                
-                                <p>Developed by <a href="https://www.usgs.gov/staff-profiles/martyn-smith">Martyn Smith</a> of the <a href="https://ny.water.usgs.gov">NY WSC</a>.<br><br>
-             
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="disclaimerTabPane"><br>
+                            <h4>USGS Software User Rights Notice</h4>
+                            <p>Software and related material (data and (or) documentation), contained in or furnished in
+                                connection with a software distribution, are made available by the U.S. Geological
+                                Survey (USGS) to be used in the public interest and in the advancement of science,
+                                subject to the following restrictions and understandings.</p>
+
+                            <p>Because the software and related material are free and provided "as is," the authors, the
+                                USGS, and the United States Government have made no warranty, express or implied, as to
+                                accuracy or completeness and are not obligated to provide the user with any support,
+                                consulting, training or assistance of any kind with regard to the use, operation, and
+                                performance of this software nor to provide the user with any updates, revisions, new
+                                versions or "bug fixes".</p>
+
+                            <p>The user assumes all risk for any damages whatsoever resulting from loss of use, data, or
+                                profits arising in connection with the access, use, quality, or performance of this
+                                software.</p>
+
+
+                            <p>Developed by <a href="https://www.usgs.gov/staff-profiles/martyn-smith">Martyn Smith</a>
+                                of the <a href="https://ny.water.usgs.gov">NY WSC</a>.<br><br>
+
                                 <span id="appVersion"></span>
-                            </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div> <!-- /.modal-dialog -->
-        </div><!-- /.modal -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
     <div id="mapDiv">
     </div>
+
 </html>
