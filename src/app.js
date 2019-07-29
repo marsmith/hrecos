@@ -116,7 +116,7 @@ var parameterList = [
 
   {pcode:'90860', type: 'Hydrologic', HRECOScode: 'SALT', NERRScode: 'SAL', desc:'Salinity, water, unfiltered, practical salinity units at 25 degrees Celsius', label: 'Salinity', unit:'PSU', conversion: null},
 
-  {pcode:'99989', type: 'Meteorologic', HRECOScode: 'PAR', NERRScode: 'TotPAR', desc:'Photosynthetically active radiation (average flux density on a horizontal surface during measurement interval), micromoles of photons per square meter per second', label: 'PAR', unit:'mmol/m2', conversion: null},
+  {pcode:'99989', type: 'Meteorologic', HRECOScode: 'PAR', NERRScode: 'TotPAR', desc:'Photosynthetically active radiation (average flux density on a horizontal surface during measurement interval), micromoles of photons per square meter per second', label: 'Photosynthetically Active Radiation', unit:'mmol/m2', conversion: null},
 
   //NERRS ONLY PARAMETERS (looked up relevant pcodes from: https://help.waterdata.usgs.gov/code/parameter_cd_query?fmt=rdb&inline=true&group_cd=%)
   {pcode:'32316', type: 'Hydrologic', HRECOScode: null, NERRScode: 'CHLFLUOR', desc:'Chlorophyll fluorescence measured in micrograms per Liter', label: 'Chlorophyll fluorescence', unit:'ug/L', conversion: null},
@@ -772,6 +772,17 @@ function getData() {
             //replace this string for clarity
             if (name.indexOf('[HRECOS]') !== -1) name = name.replace('[HRECOS]','[NWIS]');
             else if (name.indexOf('[legacy]') === -1) name += ' [NWIS]';
+
+            //observed/predicted text replacement
+            if (name.indexOf('Estuary or ocean water surface elevation above NAVD 1988, feet, NAVD88 [NWIS]')) {
+              name = name.replace('Estuary or ocean water surface elevation above NAVD 1988, feet, NAVD88 [NWIS]','OBSERVED: Estuary or ocean water surface elevation above NAVD 1988, feet, NAVD88 [NWIS]')
+            }
+            if (name.indexOf('Estuary or ocean water surface elevation above NAVD 1988, feet, tidal prediction, NAVD88 [NWIS]')) {
+              name = name.replace('Estuary or ocean water surface elevation above NAVD 1988, feet, tidal prediction, NAVD88 [NWIS]','PREDICTED: Estuary or ocean water surface elevation above NAVD 1988, feet, NAVD88 [NWIS]')
+            }
+
+            //override PSU
+            if (siteParamCombo.variable.unit.unitCode === 'PSS') siteParamCombo.variable.unit.unitCode = 'PSU';
       
             var series = {
               showInLegend: true,
