@@ -65,9 +65,10 @@ var MapZoom = 8; //set initial map zoom
 var sitesURL = './HRECOSsitesGeoJSONsubset.json';
 var NWISivURL = 'https://nwis.waterservices.usgs.gov/nwis/iv/?';
 var HRECOSurl;
-process.env.NODE_ENV === 'production' ? HRECOSurl = 'https://ny.water.usgs.gov/maps/hrecos/query.php' : HRECOSurl = 'http://localhost:8080/hrecos/query.php';
+//process.env.NODE_ENV === 'production' ? HRECOSurl = 'https://ny.water.usgs.gov/maps/hrecos/query.php' : HRECOSurl = 'http://localhost:8080/hrecos/query.php';
+process.env.NODE_ENV === 'production' ? HRECOSurl = 'https://ny.water.usgs.gov/maps/hrecos/query.php' : HRECOSurl = 'https://ny.water.usgs.gov/maps/hrecos/query.php';
 //check if staging
-if (window.location.href.indexOf('staging-ny') !== -1) HRECOSurl = 'https://staging-ny.water.usgs.gov/maps/hrecos/query.php'
+//if (window.location.href.indexOf('staging-ny') !== -1) HRECOSurl = 'https://staging-ny.water.usgs.gov/maps/hrecos/query.php'
 var crossOverDate = '2019-03-06';
 //END user config variables 
 
@@ -81,46 +82,48 @@ var compareYears;
 var requests = [];
 
 var parameterList = [
-  {pcode:'00010', type: 'Hydrologic', HRECOScode: 'WTMP', NERRScode: 'TEMP', desc:'Temperature, water, degrees Celsius', unit:'deg C', conversion: null},
-  {pcode:'00020', type: 'Meteorologic', HRECOScode: 'ATMP', NERRScode: 'ATEMP', desc:'Temperature, air, degrees Celsius', unit:'deg C', conversion: null},
+  {pcode:'00010', type: 'Hydrologic', HRECOScode: 'WTMP', NERRScode: 'TEMP', desc:'Temperature, water, degrees Celsius', label: 'Temperature, water', unit:'deg C', conversion: null},
+  {pcode:'00020', type: 'Meteorologic', HRECOScode: 'ATMP', NERRScode: 'ATEMP', desc:'Temperature, air, degrees Celsius', label: 'Temperature, air', unit:'deg C', conversion: null},
 
-  {pcode:'00036', type: 'Meteorologic', HRECOScode: 'WD', NERRScode: 'WDIR', desc:'Wind direction, degrees clockwise from true north', unit:'Deg', conversion: null},
+  {pcode:'00036', type: 'Meteorologic', HRECOScode: 'WD', NERRScode: 'WDIR', desc:'Wind direction, degrees clockwise from true north', label: 'Wind direction', unit:'Deg', conversion: null},
 
-  {pcode:'00045', type: 'Meteorologic', HRECOScode: 'RAIN', NERRScode: 'CUMPRCP', desc:'Precipitation, total, inches', unit:'in', conversion: null},
+  {pcode:'00045', type: 'Meteorologic', HRECOScode: 'RAIN', NERRScode: 'CUMPRCP', desc:'Precipitation, inches', label: 'Precipitation', unit:'in', conversion: null},
 
-  {pcode:'00052', type: 'Meteorologic', HRECOScode: 'RHUM', NERRScode: 'RH', desc:'Relative humidity, percent', unit:'%', conversion: null},
+  {pcode:'00052', type: 'Meteorologic', HRECOScode: 'RHUM', NERRScode: 'RH', desc:'Relative humidity, percent', label: 'Relative Humidity', unit:'%', conversion: null},
 
-  {pcode:'00065', type: 'Hydrologic', HRECOScode: 'DEPTH', NERRScode: 'DEPTH', desc:'Gage height, feet', unit:'feet', conversion: null},
+  {pcode:'00065', type: 'Hydrologic', HRECOScode: 'DEPTH', NERRScode: 'DEPTH', desc:'Gage height, feet', label: 'Elevation', unit:'feet', conversion: null},
 
-  {pcode:'00095', type: 'Hydrologic', HRECOScode: 'SPCO', NERRScode: 'SPCOND', desc:'Specific conductance, water, unfiltered, microsiemens per centimeter at 25 degrees Celsius', unit:'uS/cm @25C', conversion: null},
+  {pcode:'00095', type: 'Hydrologic', HRECOScode: 'SPCO', NERRScode: 'SPCOND', desc:'Specific conductance, water, unfiltered, microsiemens per centimeter at 25 degrees Celsius', label: 'Specific conductance', unit:'uS/cm @25C', conversion: null},
 
-  {pcode:'00300', type: 'Hydrologic', HRECOScode: 'DO', NERRScode: 'DO_MGL', desc:'Dissolved oxygen, water, unfiltered, milligrams per liter', unit:'mg/l', conversion: null},
-  {pcode:'00301', type: 'Hydrologic', HRECOScode: 'DOPC', NERRScode: 'DO_PCT', desc:'Dissolved oxygen, water, unfiltered, percent of saturation', unit:'% saturatn', conversion: null},
+  {pcode:'00300', type: 'Hydrologic', HRECOScode: 'DO', NERRScode: 'DO_MGL', desc:'Dissolved oxygen, water, unfiltered, milligrams per liter', label: 'Dissolved oxygen', unit:'mg/l', conversion: null},
+  {pcode:'00301', type: 'Hydrologic', HRECOScode: 'DOPC', NERRScode: 'DO_PCT', desc:'Dissolved oxygen, water, unfiltered, percent of saturation', label: 'Dissolved oxygen', unit:'% saturatn', conversion: null},
 
-  {pcode:'00400', type: 'Hydrologic', HRECOScode: 'PH', NERRScode: 'PH', desc:'pH, water, unfiltered, field, standard units', unit:'std units', conversion: null},
+  {pcode:'00400', type: 'Hydrologic', HRECOScode: 'PH', NERRScode: 'PH', desc:'pH, water, unfiltered, field, standard units', label: 'pH', unit:'std units', conversion: null},
 
-  {pcode:'62619', type: 'Hydrologic', HRECOScode: null, NERRScode: null, desc:'Estuary or ocean water surface elevation above NGVD 1929, feet', unit:'ft', conversion: 3.28084},
-  {pcode:'62620', type: 'Hydrologic', HRECOScode: 'ELEV', NERRScode: null, desc:'Estuary or ocean water surface elevation above NAVD 1988, feet, NAVD88', unit:'ft', conversion: 3.28084},
+  //commented out 7/23/2019 to simplify
+  // {pcode:'62619', type: 'Hydrologic', HRECOScode: null, NERRScode: null, desc:'Estuary or ocean water surface elevation above NGVD 1929, feet', label: 'Elevation', unit:'ft', conversion: 3.28084},
+  {pcode:'62620', type: 'Hydrologic', HRECOScode: 'ELEV', NERRScode: null, desc:'Estuary or ocean water surface elevation above NAVD 1988, feet, NAVD88', label: 'Elevation', unit:'ft', conversion: 3.28084},
 
-  {pcode:'63680', type: 'Hydrologic', HRECOScode: 'TURB', NERRScode: 'TURB', desc:'Turbidity, water, unfiltered, monochrome near infra-red LED light, 780-900 nm, detection angle 90 +-2.5 degrees, formazin nephelometric units (FNU)', unit:'FNU', conversion: null},
+  {pcode:'63680', type: 'Hydrologic', HRECOScode: 'TURB', NERRScode: 'TURB', desc:'Turbidity, water, unfiltered, monochrome near infra-red LED light, 780-900 nm, detection angle 90 +-2.5 degrees, formazin nephelometric units (FNU)', label: 'Turbidity', unit:'FNU', conversion: null},
 
-  {pcode:'72254', type: 'Hydrologic', HRECOScode: 'VEL', NERRScode: null, desc:'Water velocity reading from field sensor, feet per second', unit:'ft/sec', conversion: null},
+  {pcode:'72254', type: 'Hydrologic', HRECOScode: 'VEL', NERRScode: null, desc:'Water velocity reading from field sensor, feet per second', label: 'Water velocity', unit:'ft/sec', conversion: null},
 
-  {pcode:'75969', type: 'Meteorologic', HRECOScode: 'BARO', NERRScode: 'BP', desc:'Barometric pressure, not corrected to sea level, millibars', unit:'mbar', conversion: null},
+  {pcode:'75969', type: 'Meteorologic', HRECOScode: 'BARO', NERRScode: 'BP', desc:'Barometric pressure, not corrected to sea level, millibars', label: 'Barometric pressure', unit:'mbar', conversion: null},
 
-  {pcode:'72253', type: 'Meteorologic', HRECOScode: 'STMP', NERRScode: null, desc:'Soil temperature, degrees Celsius', unit:'deg C', conversion: null},
+  {pcode:'72253', type: 'Meteorologic', HRECOScode: 'STMP', NERRScode: null, desc:'Soil temperature, degrees Celsius', label: 'Soil temperature', unit:'deg C', conversion: null},
 
-  {pcode:'82127', type: 'Meteorologic', HRECOScode: 'WSPD', NERRScode: 'WSPD', desc:'Wind speed, knots', unit:'knots', conversion: null},
+  {pcode:'82127', type: 'Meteorologic', HRECOScode: 'WSPD', NERRScode: 'WSPD', desc:'Wind speed, knots', label: 'Wind speed', unit:'knots', conversion: null},
 
-  {pcode:'90860', type: 'Hydrologic', HRECOScode: 'SALT', NERRScode: 'SAL', desc:'Salinity, water, unfiltered, practical salinity units at 25 degrees Celsius', unit:'PSS', conversion: null},
-  {pcode:'00480', type: 'Hydrologic', HRECOScode: 'SALT', NERRScode: 'SAL', desc:'Salinity, water, unfiltered, parts per thousand', unit:'PPT', conversion: null},
+  {pcode:'90860', type: 'Hydrologic', HRECOScode: 'SALT', NERRScode: 'SAL', desc:'Salinity, water, unfiltered, practical salinity units at 25 degrees Celsius', label: 'Salinity', unit:'PSU', conversion: null},
 
-  {pcode:'99989', type: 'Meteorologic', HRECOScode: 'PAR', NERRScode: 'TotPAR', desc:'Photosynthetically active radiation (average flux density on a horizontal surface during measurement interval), micromoles of photons per square meter per second', unit:'mmol/m2', conversion: null},
+  {pcode:'99989', type: 'Meteorologic', HRECOScode: 'PAR', NERRScode: 'TotPAR', desc:'Photosynthetically active radiation (average flux density on a horizontal surface during measurement interval), micromoles of photons per square meter per second', label: 'PAR', unit:'mmol/m2', conversion: null},
 
   //NERRS ONLY PARAMETERS (looked up relevant pcodes from: https://help.waterdata.usgs.gov/code/parameter_cd_query?fmt=rdb&inline=true&group_cd=%)
-  {pcode:'32316', type: 'Hydrologic', HRECOScode: null, NERRScode: 'CHLFLUOR', desc:'Chlorophyll fluorescence measured in micrograms per Liter', unit:'ug/L', conversion: null},
-  {pcode:'62625', type: 'Meteorologic', HRECOScode: null, NERRScode: 'MAXWSPD', desc:'Max wind speed measured in meters per second', unit:'m/s', conversion: null},
-  {pcode:'99965', type: 'Meteorologic', HRECOScode: null, NERRScode: 'MAXWSPDT', desc:'Time of max wind speed measurement', unit:'hh:mm', conversion: null}
+  {pcode:'32316', type: 'Hydrologic', HRECOScode: null, NERRScode: 'CHLFLUOR', desc:'Chlorophyll fluorescence measured in micrograms per Liter', label: 'Chlorophyll fluorescence', unit:'ug/L', conversion: null},
+
+  //commented out 7/23/2019 to simplify
+  // {pcode:'62625', type: 'Meteorologic', HRECOScode: null, NERRScode: 'MAXWSPD', desc:'Max wind speed measured in meters per second', label: 'Max wind speed', unit:'m/s', conversion: null},
+  // {pcode:'99965', type: 'Meteorologic', HRECOScode: null, NERRScode: 'MAXWSPDT', desc:'Time of max wind speed measurement', label: 'Time of max wind speed', unit:'hh:mm', conversion: null}
 ];
 
 //END global variables
@@ -315,6 +318,7 @@ function getData() {
   //show loader
   $('#loading').show();
   $('#downloadData').prop('disabled', true);
+  $('#toggleTooltip').prop('disabled', true);
   $('#graphStatus').html('');
 
   //set request infos
@@ -360,6 +364,7 @@ function getData() {
 
   if (hydParameter) {
     var hydParameterCodes = hydParameter.map(function(item) {
+      console.log('HERE',item)
       return item.value;
     });
   }
@@ -584,6 +589,13 @@ function getData() {
               //NERRS parameter lookup
               if (NERRSdata) {
                 parameterInfo = lookupNERRSParameter(value.parameter);
+
+                //special override for NERRS precipitation label
+                if (parameterInfo.NERRScode === 'CUMPRCP') {
+                  parameterInfo.desc = 'Precipitation, cumulative daily total, inches';
+                  parameterInfo.conversion = 0.0393701;
+                }
+                console.log('NERRS data',parameterInfo);
               }
               else {
                 parameterInfo = lookupParameter(value.parameter);
@@ -725,7 +737,7 @@ function getData() {
               var itemValue = item.value/1;
 
               //null out the values if there is a maintenance flag
-              if (item.qualifiers.indexOf('Mnt') !== -1 || item.qualifiers.indexOf('Eqp') !== -1) {
+              if (item.qualifiers.indexOf('Mnt') !== -1 || item.qualifiers.indexOf('Eqp') !== -1 || item.qualifiers.indexOf('Ssn') !== -1) {
                 itemValue = null;
                 qualifierFound = true;
               }
@@ -744,8 +756,15 @@ function getData() {
 
         
             var description;
+            var variableDescription = siteParamCombo.variable.variableDescription;
+
+            //replace NWIS text for precipitation to remove the word 'total'
+            if (siteParamCombo.variable.variableDescription.indexOf('Precipitation, total, inches') !== -1) {
+              variableDescription = 'Precipitation, inches'
+            }
+
             //console.log('method description:', siteParamCombo.variable.variableDescription, value.method[0].methodDescription)
-            if (value.method[0].methodDescription.length > 0) description = siteParamCombo.variable.variableDescription + ', ' + value.method[0].methodDescription;
+            if (value.method[0].methodDescription.length > 0) description = variableDescription + ', ' + value.method[0].methodDescription;
             else description = siteParamCombo.variable.variableDescription;
 
             var name = siteParamCombo.sourceInfo.siteName + ' | ' + $('<div>').html(description).text();
@@ -803,7 +822,10 @@ function getData() {
             showGraph(startTime,seriesData); 
 
             //enable download button
-            if (!NERRSdata) $('#downloadData').prop('disabled', false);
+            if (!NERRSdata) {
+              $('#downloadData').prop('disabled', false);
+              $('#toggleTooltip').prop('disabled', false);
+            }
 
             if (qualifierFound) $('#graphStatus').append('<div class="alert alert-warning" role="alert" style="font-size:small;">Qualifier flags were found for the input request, some data is missing.</div>');
 
@@ -873,7 +895,13 @@ function showGraph(startTime,seriesData) {
     legend: {
       itemStyle: {
         color: '#000000',
-        fontWeight: 'normal'
+        fontWeight: 'normal',
+        fontSize: '14px'
+      },
+      itemCheckboxStyle: {
+        width: "18px", 
+        height: "18px", 
+        position:"absolute"
       }
     },
 		chart: {
@@ -940,10 +968,13 @@ function showGraph(startTime,seriesData) {
           if (compareYears) return Highcharts.dateFormat('%m/%d', this.value);
           else return Highcharts.dateFormat('%m/%d/%Y', this.value);
         },
-        style: {"fontSize": "9px"},
+        style: {
+          fontSize: "12px"
+        },
 				//rotation: 90,
 				align: 'center',
-				tickInterval: 172800 * 1000
+        tickInterval: 172800 * 1000,
+
 			}
     },
 		yAxis: [],
@@ -964,7 +995,8 @@ function showGraph(startTime,seriesData) {
       },
       labels: {
         style: {
-            color: obj.color
+            color: obj.color,
+            fontSize: '12px'
         }
       }
     };
@@ -1001,6 +1033,21 @@ function showGraph(startTime,seriesData) {
   
   $('#loading').hide();
   chart = Highcharts.chart('graphContainer', chartSetup);
+
+  //enable tooltip toggle
+  chart.enableTooltip = true;
+  $('#toggleTooltip').bind('click', function() {
+    
+    chart.enableTooltip = !chart.enableTooltip;
+
+    chart.update({
+        tooltip: {
+            enabled: chart.enableTooltip
+        }
+    });
+
+    $(this).text(chart.enableTooltip ? 'Disable Tooltip' : 'Enable Tooltip');
+  });
 }
 
 function initializeFilters(data) {
@@ -1018,12 +1065,26 @@ function initializeFilters(data) {
             
       $.each(parameterList, function (idx,item) {
 
+        var obj = {
+          id:idx,
+          text:item.label,
+          value:item.pcode
+        }
+
         if (item.type === 'Meteorologic') {
-          selectData.push({
-            id:idx,
-            text:item.desc,
-            value:item.pcode
-          });
+
+          //check to see if we already have this label in the dropdown
+          var foundIndex = containsObject(obj,selectData);
+          if (foundIndex) {
+            
+            //if this label exists, just push the pcode
+            selectData[foundIndex].value.push(item.pcode)
+
+          }
+          else {
+            selectData.push(obj);
+          }
+
         }
       });
     }
@@ -1031,12 +1092,27 @@ function initializeFilters(data) {
     if (divID === 'hydParameterSelect') {
             
       $.each(parameterList, function (idx,item) {
+
+        var obj = {
+          id:idx,
+          text:item.label,
+          value:[item.pcode]
+        }
+
         if (item.type === 'Hydrologic') {
-          selectData.push({
-            id:idx,
-            text:item.desc,
-            value:item.pcode
-          });
+
+          //check to see if we already have this label in the dropdown
+          var foundIndex = containsObject(obj,selectData);
+          if (foundIndex) {
+            
+            //if this label exists, just push the pcode
+            selectData[foundIndex].value.push(item.pcode)
+
+          }
+          else {
+            selectData.push(obj);
+          }
+
         }
       });
     }
@@ -1268,4 +1344,15 @@ function lookupNWISsite(HRECOSid) {
     }
   });
   return response;
+}
+
+function containsObject(obj, list) {
+  var i;
+  for (i = 0; i < list.length; i++) {
+      if (list[i].text === obj.text) {
+          return i;
+      }
+  }
+
+  return false;
 }
