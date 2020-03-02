@@ -31,10 +31,12 @@ import 'select2';
 import moment from 'moment';
 import Highcharts from 'highcharts';
 import addExporting from 'highcharts/modules/exporting';
+import addBrokenAxis from 'highcharts/modules/broken-axis';
 import 'bootstrap-datepicker';
 import { map, control, tileLayer, featureGroup, geoJSON, Icon } from 'leaflet';
 import { basemapLayer } from 'esri-leaflet';
 addExporting(Highcharts);
+addBrokenAxis(Highcharts);
 import { config, library, dom } from '@fortawesome/fontawesome-svg-core';
 import { faBars } from '@fortawesome/free-solid-svg-icons/faBars';
 import { faInfo } from '@fortawesome/free-solid-svg-icons/faInfo';
@@ -91,7 +93,7 @@ var parameterList = [
 
   {pcode:'00052', type: 'Meteorologic', HRECOScode: 'RHUM', NERRScode: 'RH', desc:'Relative humidity, percent', label: 'Relative Humidity', unit:'%', conversion: null},
 
-  {pcode:'00065', type: 'Hydrologic', HRECOScode: 'DEPTH', NERRScode: 'DEPTH', desc:'Gage height, feet', label: 'Elevation', unit:'feet', conversion: null},
+  {pcode:'00065', type: 'Hydrologic', HRECOScode: 'DEPTH', NERRScode: 'DEPTH', desc:'Gage height, feet', label: 'Gage height', unit:'feet', conversion: null},
 
   {pcode:'00095', type: 'Hydrologic', HRECOScode: 'SPCO', NERRScode: 'SPCOND', desc:'Specific conductance, water, unfiltered, microsiemens per centimeter at 25 degrees Celsius', label: 'Specific conductance', unit:'uS/cm @25C', conversion: null},
 
@@ -364,15 +366,22 @@ function getData() {
 
   if (hydParameter) {
     var hydParameterCodes = hydParameter.map(function(item) {
-      console.log('HERE',item)
+      console.log('HERE',item);
       return item.value;
     });
   }
 
-  var parameterCodesList = metParameterCodes.concat(hydParameterCodes);
+  //bail if nothing is selected
+  if (metParameterCodes.length == 0 && hydParameterCodes.length == 0) {
+    alert('No parameters selected');
+    return;
+  }
+
+  var parameterCodesList = metParameterCodes.concat(hydParameterCodes).join(',').split(',');
+  var processedParmeterCodesList = [];
 
   requestData.parameterCd = parameterCodesList.join(',');
-  console.log('parameter code list:',requestData.parameterCd);
+  console.log('parameter code list:',parameterCodesList);
 
 
   //time and date stuff
@@ -694,7 +703,7 @@ function getData() {
               $('#loading').hide();
             }
 
-            $('#graphStatus').append('<div class="alert alert-warning" role="alert" style="font-size:small;">Found HRECOS site(s): ' + badges.join('  ') + ' but no data in the legacy HRECOS DB was found for parameters: [' +  requestData.parameterCd + ']</div>');
+            $('#graphStatus').append('<div id="hrecosAlert" class="alert alert-warning" role="alert" style="font-size:small;">Found HRECOS site(s): ' + badges.join('  ') + ' but no data in the legacy HRECOS DB was found for parameters: [' +  requestData.parameterCd + ']</div>');
 
             //$('#graphStatus').append('<div id="hrecosAlert" class="alert alert-warning" role="alert" style="font-size:small;">Found HRECOS site(s) [' + siteIDs + '] but no data in the legacy HRECOS DB was found [' +  requestData.parameterCd + ']</div>');
           }
@@ -706,9 +715,17 @@ function getData() {
               $('#loading').hide();
             }
 
-            $('#graphStatus').append('<div class="alert alert-warning" role="alert" style="font-size:small;">Found NWIS site(s): ' + badges.join('  ') + ' but no data was found in USGS NWIS waterservices for parameters: [' +  requestData.parameterCd + ']</div>');
+            $('#graphStatus').append('<div id="nwisAlert" class="alert alert-warning" role="alert" style="font-size:small;">Found NWIS site(s): ' + badges.join('  ') + ' but no data was found in USGS NWIS waterservices for parameters: [' +  requestData.parameterCd + ']</div>');
 
             //$('#graphStatus').append('<div id="nwisAlert" class="alert alert-warning" role="alert" style="font-size:small;">Found NWIS site(s) [' + siteIDs + '] but no data was found in USGS NWIS waterservices for [' +  requestData.parameterCd + ']</div>');
+          }
+        }
+
+        //need to make sure we have the same amount of timeseries as we did original pcodes
+        else {
+          console.log('CHECKING:',processedData.value.timeSeries.length,parameterCodesList.length)
+          if (processedData.value.timeSeries.length !== parameterCodesList.length) {
+            $('#graphStatus').append('<div class="alert alert-warning" role="alert" style="font-size:small;">Data for one or more parameters is missing</div>');
           }
         }
 
@@ -716,7 +733,7 @@ function getData() {
         //console.log('setting starttime:',startTime);
         //var qualifierFound = false;
 
-        $(processedData.value.timeSeries).each(function (i, siteParamCombo) {
+        $(processedData.value.timeSeries).each(function (timeSeriesIndex, siteParamCombo) {
 
           console.log('siteParamCombo',siteParamCombo, processedSites);
 
@@ -728,7 +745,7 @@ function getData() {
             //check to make sure there are some values
             if (value.value.length === 0) return;
 
-            var valueArray = value.value.map(function(item) {
+            var valueArray = value.value.map(function(item, index) {
               var seconds = moment(item.dateTime).valueOf();
 
               //here is where we add a year to each value so compareYears plots can use the same x-axis
@@ -749,9 +766,26 @@ function getData() {
 
               //subtract 5 hours if data is from HRECOS
               if (value.method[0].methodDescription === '[legacy]') seconds = seconds - 18000000;
+
+              //block for adding null values for data gaps  NOT FINISHED, replaced by highcharts 'broken-axis' module
               
+              // if (index > 0) {
+              //   //console.log("INDEX", index)
+              //   var previousX = moment(siteParamCombo.values[0].value[index - 1].dateTime).valueOf();
+              //   var distance = seconds - previousX;
+
+              //   //if distance in time from this point to previous point is greater than 15 minutes
+              //   if (distance === 900000) {
+              //     return [seconds,itemValue];
+              //   } else {
+              //     console.log("WE FOUND A DATAGAP:", distance)
+              //     //data.push([previousX + 1, null])
+              //     //data.push(datapoints.lineData[i]);
+              //     return [seconds,null];
+              //   }
+              // }
+
               return [seconds,itemValue];
-              //return itemValue;
             });
 
         
@@ -782,13 +816,13 @@ function getData() {
             }
 
             //override PSU
-            if (siteParamCombo.variable.unit.unitCode === 'PSS') siteParamCombo.variable.unit.unitCode = 'PSU';
+            if (siteParamCombo.variable.unit.unitCode === 'PSS') siteParamCombo.variable.unit.unitCode = 'psu';
       
             var series = {
               showInLegend: true,
               values: value,
               data: valueArray,
-              color: getRandomColor(),
+              color: getColor(timeSeriesIndex),
               siteID: siteParamCombo.sourceInfo.siteCode[0].value,
               siteName: siteParamCombo.sourceInfo.siteName,
               siteCode: siteParamCombo.name,
@@ -817,8 +851,9 @@ function getData() {
           });
         });
 
-        //check if were done
+        //check if were done with requests
         console.log("length test:",counter,inputRequests.length,seriesData.length)
+
         //if (counter === seriesData.length && counter === inputRequests.length) {
         if (counter === inputRequests.length) {
 
@@ -834,8 +869,8 @@ function getData() {
 
             //enable download button
             if (!NERRSdata) {
-              $('#downloadData').prop('disabled', false);
-              $('#toggleTooltip').prop('disabled', false);
+              // $('#downloadData').prop('disabled', false);
+              // $('#toggleTooltip').prop('disabled', false);
             }
 
             if (qualifierFound) $('#graphStatus').append('<div class="alert alert-warning" role="alert" style="font-size:small;">Qualifier flags were found for the input request, some data is missing.</div>');
@@ -884,6 +919,13 @@ function getData() {
 
 }
 
+function getColor(i) {
+  console.log('index:',i)
+ var pallette = ['#4363d8', '#f58231','#e6194b', '#3cb44b', '#ffe119', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080', '#000000']
+
+  return pallette[i];
+}
+
 function getRandomColor() {
   var letters = '0123456789ABCDEF';
   var color = '#';
@@ -895,6 +937,10 @@ function getRandomColor() {
 
 function showGraph(startTime,seriesData) {
   console.log('In ShowGraph.  Processing this many:',seriesData.length, seriesData);
+
+  //enable download button
+  $('#downloadData').prop('disabled', false);
+  $('#toggleTooltip').prop('disabled', false);
 
 	Highcharts.setOptions({
 		global: { useUTC: false },
@@ -926,6 +972,9 @@ function showGraph(startTime,seriesData) {
       series: {
         pointStart: startTime,
         pointInterval: 900000, //15 minutes
+
+        //show gap in line if we are missing any 15 min value
+        gapSize: 1,
 
         //turn on checkbox and set it to toggle series visibility
         events: {
@@ -1111,16 +1160,19 @@ function initializeFilters(data) {
         }
 
         if (item.type === 'Hydrologic') {
+          
 
           //check to see if we already have this label in the dropdown
           var foundIndex = containsObject(obj,selectData);
           if (foundIndex) {
             
             //if this label exists, just push the pcode
+            //console.log('1a', item)
             selectData[foundIndex].value.push(item.pcode)
 
           }
           else {
+            //console.log('111',obj)
             selectData.push(obj);
           }
 
