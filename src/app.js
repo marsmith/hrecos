@@ -114,6 +114,8 @@ var parameterList = [
 
   {pcode:'72253', type: 'Meteorologic', HRECOScode: 'STMP', NERRScode: null, desc:'Soil temperature, degrees Celsius', label: 'Soil temperature', unit:'deg C', conversion: null},
 
+  {pcode:'61727', type: 'Meteorologic', HRECOScode: null, NERRScode: null, desc:'Wind gust speed, knots', label: 'Wind gust speed', unit:'knots', conversion: null},
+
   {pcode:'82127', type: 'Meteorologic', HRECOScode: 'WSPD', NERRScode: 'WSPD', desc:'Wind speed, knots', label: 'Wind speed', unit:'knots', conversion: null},
 
   {pcode:'90860', type: 'Hydrologic', HRECOScode: 'SALT', NERRScode: 'SAL', desc:'Salinity, water, unfiltered, practical salinity units at 25 degrees Celsius', label: 'Salinity', unit:'PSU', conversion: null},
