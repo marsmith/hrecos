@@ -95,6 +95,24 @@
       "type": "Feature",
       "geometry": {
          "type": "Point",
+         "coordinates":  [ -73.98522,41.31434 ]
+      },
+      "properties": {
+      "Station Name":"Bear Mountain (NERRS)",
+      "HRECOS ID":"HUDBMWQ",
+      "Site ID":"NERRS_HUDBMWQ",
+      "Partners": [
+        {
+          "name": "NOAA's National Estuarine Research Reserve System (NERRS)",
+          "url": "http://cdmo.baruch.sc.edu/"
+        }
+      ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+         "type": "Point",
          "coordinates":  [ -73.92532,42.03655 ]
       },
       "properties": {
@@ -337,9 +355,28 @@
          "coordinates":  [ -74.123083,40.71325 ]
       },
       "properties": {
-      "Station Name":"Passaic River at PVSC at Newark, NJ",
+      "Station Name":"Newark Bay at PVSC at Newark NJ  (Stage)",
       "HRECOS ID":"HRPVSC",
       "Site ID":"01392650",
+      "Partners": [
+        {
+          "name": "Passaic Valley Sewerage Commission",
+          "url": "https://www.nj.gov/pvsc/"
+        }
+      ]
+      }
+    },
+
+    {
+      "type": "Feature",
+      "geometry": {
+         "type": "Point",
+         "coordinates":  [ -74.12286110,40.71130556 ]
+      },
+      "properties": {
+      "Station Name":"Newark Bay at Oak Island Yards at Newark NJ (Water Quality)",
+      "HRECOS ID":"",
+      "Site ID":"404241074072202",
       "Partners": [
         {
           "name": "Passaic Valley Sewerage Commission",
